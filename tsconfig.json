@@ -5,14 +5,19 @@
     "target": "ESNext",
     "module": "Preserve",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
     "allowJs": false,
+
+    // Only add if using JSX (e.g. React, @elysiajs/html)
+    // "jsx": "react-jsx",
 
     // Bundler mode
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": true, // Drop if building a library
     "verbatimModuleSyntax": true,
     "noEmit": true,
+
+    // Add bun-types here OR via @types/bun package, not both
+    "types": ["bun-types"],
 
     // Best practices
     "strict": true,
@@ -21,9 +26,10 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    // Some stricter flags (disabled by default)
+    // Disabled by default — enable if you want stricter hygiene
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  "include": ["src/**/*", "scripts/**/*"]
 }
