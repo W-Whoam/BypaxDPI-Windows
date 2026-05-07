@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run update-proxy-icon && vite build",
+    "build": "bun run update-proxy-icon && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "update-proxy-icon": "node change-icon.js",
-    "copy-proxy": "node scripts/copy-proxy.cjs",
-    "build-proxy": "node scripts/build-proxy.cjs"
+    "update-proxy-icon": "bun change-icon.js",
+    "copy-proxy": "bun scripts/copy-proxy.cjs",
+    "build-proxy": "bun scripts/build-proxy.cjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.10.1",
