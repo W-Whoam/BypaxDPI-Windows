@@ -2,5 +2,6 @@
 	"recommendations": [
 		"biomejs.biome",
 		"oven.bun-vscode",
+		"tauri-apps.tauri-vscode"
 	]
 }
