@@ -21,7 +21,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Editor files
+# Output
 target
 src-tauri/target
 
