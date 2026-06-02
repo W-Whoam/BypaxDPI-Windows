@@ -44,13 +44,8 @@ import {
 	type TranslationKey,
 	type Translations,
 } from "./i18n";
-import {
-	DEFAULT_CHUNKS,
-	ISP_PROFILES,
-	VALID_CHUNK_SIZES,
-	VALID_DPI_METHODS,
-} from "./profiles";
 import { ipc } from "./ipc";
+import { ISP_PROFILES } from "./profiles";
 import Settings from "./Settings";
 import type {
 	AppConfig,
@@ -109,7 +104,7 @@ function App() {
 			}, 500);
 
 			const dotTimer = setInterval(() => {
-				setClosingDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+				setClosingDots((prev) => (prev.length >= 3 ? "" : `${prev}.`));
 			}, 300);
 
 			return () => {
@@ -370,6 +365,7 @@ function App() {
 
 		if (!finalMsg || finalMsg.toString().trim().length === 0) return;
 
+		// biome-ignore lint/suspicious/noControlCharactersInRegex: intentional — strips ANSI color escape codes (ESC[..m) from sidecar stdout.
 		const cleanMsg = finalMsg.toString().replace(/\x1b\[[0-9;]*m/g, "");
 		// ✅ #12: Sadece 100'ü aşınca kırp (her seferinde slice yerine)
 		setLogs((prev) => {
@@ -565,7 +561,7 @@ function App() {
 		return false;
 	};
 
-	const startEngine = async (ignoredPort: number, portRetryCount = 0) => {
+	const startEngine = async (_ignoredPort: number, portRetryCount = 0) => {
 		// P2-FIX: Asynchronous execution lock -> Aynı anda iki instance spawn edilmesini önler
 		if (isStartingEngine.current || childProcess.current) return;
 		isStartingEngine.current = true;
@@ -1335,9 +1331,9 @@ function App() {
 				}
 
 				// ✅ Sorun 4: Zombi süreçleri temizle (önceki çökme/force kill sonrası kalmış olabilir)
-				await ipc.killZombieSidecar().catch((e) =>
-					console.log("Zombi temizleme:", e),
-				);
+				await ipc
+					.killZombieSidecar()
+					.catch((e) => console.log("Zombi temizleme:", e));
 				// ✅ Sorun 1: Proxy'yi temizle (çökme sonrası kalıntı)
 				await clearProxy(true);
 				updateTrayTooltip("disconnected");
@@ -1874,6 +1870,7 @@ function App() {
 												fontSize: "0.85rem",
 												lineHeight: "1.4",
 											}}
+											// biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is sanitized via DOMPurify (PURIFY_CONFIG) on the next line.
 											dangerouslySetInnerHTML={{
 												__html: DOMPurify.sanitize(t.adminStep, PURIFY_CONFIG),
 											}}
@@ -2958,6 +2955,7 @@ function App() {
 											}}
 										>
 											<span
+												// biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is sanitized via DOMPurify (PURIFY_CONFIG) on the next line.
 												dangerouslySetInnerHTML={{
 													__html: DOMPurify.sanitize(
 														t.modalDesc,

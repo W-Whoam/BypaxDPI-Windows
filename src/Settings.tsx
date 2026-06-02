@@ -1,8 +1,5 @@
-import { invoke } from "@tauri-apps/api/core";
-import { ipc } from "./ipc";
 import { disable, enable, isEnabled } from "@tauri-apps/plugin-autostart";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { Command } from "@tauri-apps/plugin-shell";
 import { AnimatePresence, motion } from "framer-motion";
 import {
 	Activity,
@@ -13,7 +10,6 @@ import {
 	ChevronLeft,
 	Coffee,
 	Globe,
-	Languages,
 	Pin,
 	Power,
 	RotateCw,
@@ -23,13 +19,20 @@ import {
 	Youtube,
 	Zap,
 } from "lucide-react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { URLS } from "./constants";
-import { getTranslations, SUPPORTED_LANGUAGES } from "./i18n";
 import type { TranslationKey } from "./i18n";
+import { getTranslations, SUPPORTED_LANGUAGES } from "./i18n";
+import { ipc } from "./ipc";
 import { CHUNK_SIZES, DEFAULT_CHUNKS, ISP_PROFILES } from "./profiles";
-import type { AppConfig, DnsLatencies, DnsKey, IspProfileId, UpdateConfig } from "./types";
+import type {
+	AppConfig,
+	DnsKey,
+	DnsLatencies,
+	IspProfileId,
+	UpdateConfig,
+} from "./types";
 import "./App.css";
 
 export type SettingsProps = {
@@ -40,7 +43,13 @@ export type SettingsProps = {
 	setDnsLatencies: Dispatch<SetStateAction<DnsLatencies>>;
 };
 
-const Toggle = ({ checked, onChange }: { checked: boolean; onChange: (next: boolean) => void }) => (
+const Toggle = ({
+	checked,
+	onChange,
+}: {
+	checked: boolean;
+	onChange: (next: boolean) => void;
+}) => (
 	<div
 		className={`v2-toggle ${checked ? "active" : ""}`}
 		onClick={(e) => {
@@ -81,7 +90,12 @@ const Settings = ({
 	const setLatencies = setDnsLatencies || (() => {});
 	const [isChecking, setIsChecking] = useState(false);
 	const [autostartEnabled, setAutostartEnabled] = useState(false);
-	type DnsProvider = { id: DnsKey; name: string; desc: string; ip: string | null };
+	type DnsProvider = {
+		id: DnsKey;
+		name: string;
+		desc: string;
+		ip: string | null;
+	};
 	const [sortedProviders, setSortedProviders] = useState<DnsProvider[]>([]);
 	const [fixStatus, setFixStatus] = useState("idle");
 
@@ -168,13 +182,6 @@ const Settings = ({
 
 		const pingableProviders = DNS_PROVIDERS.filter((p) => p.ip !== null);
 
-		// Network Information API is not in standard lib; cast to access it safely
-		const nav = navigator as Navigator & { connection?: { effectiveType?: string } };
-		const isSlowConnection =
-			nav.connection?.effectiveType === "3g" ||
-			nav.connection?.effectiveType === "2g";
-		const TIMEOUT_MS = isSlowConnection ? 3000 : 1500;
-
 		const results = await Promise.allSettled(
 			pingableProviders.map(async (provider) => {
 				try {
@@ -236,9 +243,6 @@ const Settings = ({
 			setTimeout(() => setFixStatus("idle"), 2000);
 		}
 	};
-
-	const currentLang =
-		SUPPORTED_LANGUAGES.find((l) => l.code === lang) || SUPPORTED_LANGUAGES[0];
 
 	return (
 		<div className="v2-settings-overlay">
@@ -494,9 +498,13 @@ const Settings = ({
 									}}
 								>
 									{ISP_PROFILES.filter((p) => p.id !== "other").map((isp) => {
-										const nameKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Name` as TranslationKey;
-										const descKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Desc` as TranslationKey;
-										const ICON_MAP: Partial<Record<IspProfileId, React.ReactElement>> = {
+										const nameKey =
+											`iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Name` as TranslationKey;
+										const descKey =
+											`iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Desc` as TranslationKey;
+										const ICON_MAP: Partial<
+											Record<IspProfileId, React.ReactElement>
+										> = {
 											light: <Activity size={18} />,
 											mid: <Zap size={18} />,
 											heavy: <Shield size={18} />,
@@ -505,8 +513,11 @@ const Settings = ({
 										const descVal = t[descKey];
 										const ispData = {
 											...isp,
-											name: (typeof nameVal === "string" ? nameVal : null) || isp.id,
-											desc: (typeof descVal === "string" ? descVal : null) || "",
+											name:
+												(typeof nameVal === "string" ? nameVal : null) ||
+												isp.id,
+											desc:
+												(typeof descVal === "string" ? descVal : null) || "",
 											icon: ICON_MAP[isp.id] ?? <Globe size={18} />,
 										};
 										const isApplied =
@@ -1445,7 +1456,7 @@ const Settings = ({
 											if (config.notifications !== false) {
 												updateConfig(
 													"notifyOnConnect",
-													config.notifyOnConnect !== false ? false : true,
+													config.notifyOnConnect === false,
 												);
 											}
 										}}
@@ -1492,7 +1503,7 @@ const Settings = ({
 											if (config.notifications !== false) {
 												updateConfig(
 													"notifyOnDisconnect",
-													config.notifyOnDisconnect !== false ? false : true,
+													config.notifyOnDisconnect === false,
 												);
 											}
 										}}
