@@ -1,655 +1,655 @@
 import type { Language } from "./types";
 
 const translations = {
-  "tr": {
-    // ===== APP.JSX - Header =====
-    appName: "BYPAXDPI",
-    statusActive: "AKTİF",
-    statusInactive: "KAPALI",
-    statusReady: "HAZIR",
+	tr: {
+		// ===== APP.JSX - Header =====
+		appName: "BYPAXDPI",
+		statusActive: "AKTİF",
+		statusInactive: "KAPALI",
+		statusReady: "HAZIR",
 
-    // ===== APP.JSX - Main Status =====
-    statusConnected: "GÜVENLİ",
-    statusConnecting: "BAĞLANIYOR...",
-    statusDisconnecting: "KESİLİYOR...",
-    statusReady2: "HAZIR",
-    descConnected: "Bağlantınız şifrelendi ve korunuyor.",
-    descConnecting: "İşlem yapılıyor, lütfen bekleyin.",
-    descReady: "DPI Bypass için bağlanın.",
+		// ===== APP.JSX - Main Status =====
+		statusConnected: "GÜVENLİ",
+		statusConnecting: "BAĞLANIYOR...",
+		statusDisconnecting: "KESİLİYOR...",
+		statusReady2: "HAZIR",
+		descConnected: "Bağlantınız şifrelendi ve korunuyor.",
+		descConnecting: "İşlem yapılıyor, lütfen bekleyin.",
+		descReady: "DPI Bypass için bağlanın.",
 
-    // ===== APP.JSX - Buttons =====
-    btnConnect: "BAĞLAN",
-    btnDisconnect: "BAĞLANTIYI KES",
-    btnConnecting: "BAĞLANIYOR...",
-    btnApplyingSettings: "AYAR UYGULANIYOR...",
-    btnDisconnecting: "KESİLİYOR...",
-    btnConnectDevices: "Diğer Cihazları Bağla",
+		// ===== APP.JSX - Buttons =====
+		btnConnect: "BAĞLAN",
+		btnDisconnect: "BAĞLANTIYI KES",
+		btnConnecting: "BAĞLANIYOR...",
+		btnApplyingSettings: "AYAR UYGULANIYOR...",
+		btnDisconnecting: "KESİLİYOR...",
+		btnConnectDevices: "Diğer Cihazları Bağla",
 
-    // ===== APP.JSX - Bottom Nav =====
-    navSettings: "AYARLAR",
-    navLogs: "LOGLAR",
-    navExit: "ÇIKIŞ",
+		// ===== APP.JSX - Bottom Nav =====
+		navSettings: "AYARLAR",
+		navLogs: "LOGLAR",
+		navExit: "ÇIKIŞ",
 
-    // ===== APP.JSX - Logs Panel =====
-    logsTitle: "SİSTEM LOGLARI",
-    logsClear: "TEMİZLE",
-    logsCopy: "KOPYALA",
-    logsCopied: "KOPYALANDI!",
-    logsCopyError: "HATA!",
+		// ===== APP.JSX - Logs Panel =====
+		logsTitle: "SİSTEM LOGLARI",
+		logsClear: "TEMİZLE",
+		logsCopy: "KOPYALA",
+		logsCopied: "KOPYALANDI!",
+		logsCopyError: "HATA!",
 
-    // ===== APP.JSX - Connection Modal =====
-    modalTitle: "Cihaz Bağlama",
-    modalSubtitle: "LAN Paylaşımı",
-    modalDesc:
-      "Cihazınızın Wi-Fi ayarlarında <strong>Proxy</strong> kısmını <strong>Manuel</strong> yapın ve bilgileri girin.",
-    modalDescPac:
-      "Diğer cihazlarda <strong>Otomatik (PAC)</strong> kullanımı önerilir.",
-    modalPacQrHint:
-      'QR\'ı tarayıp adresi kopyalayın ve telefonunuzun <strong>Wi-Fi → Proxy → Otomatik URL</strong> kısmına yapıştırın.<br><br><span class="text-red-500 font-semibold">⚠ ÖNEMLİ:</span> Bağlantıyı sonlandırdıktan sonra internet sorunu yaşarsanız, Wi-Fi bağlantınızı kapatıp açın.',
-    modalPacUrl: "PAC Adresi (Önerilen)",
-    modalManualFallback: "Alternatif: Manuel proxy",
-    modalTabPac: "Otomatik (PAC)",
-    modalTabManual: "Manuel",
-    modalPacStep1Title: "1. Kurulum Rehberini Açın",
-    modalPacStep1Desc:
-      "Kameranızla QR kodu okutarak adım adım anlatım sayfasına gidin.",
-    modalPacStep2Title: "2. PAC Adresini Kopyalayın",
-    modalPacStep2Desc:
-      'Rehberde gösterilen "Otomatik URL" alanına bu kodu yapıştırın:',
-    modalPacWarningTitle: "DİKKAT:",
-    modalPacWarningDesc:
-      "Bypax kapatıldıktan sonra YouTube vb. uygulamalarda internet sorunu yaşarsanız (eski önbellek nedeniyle), Wi-Fi bağlantısını kapatıp açmanız yeterlidir.",
-    modalManualWarningTitle: "DİKKAT:",
-    modalManualWarningDesc:
-      "Bypax kapatıldığında internet bağlantısı tamamen kesilir. İnternete tekrar girmek için cihazınızın Wi-Fi ayarlarından Proxy'i eski haline (Yok) getirmelisiniz.",
-    modalPacQrCaption: "QR → Kurulum sayfası (tara ve kopyala)",
-    modalHost: "Sunucu (Host)",
-    modalPort: "Port",
-    modalTutorial: "Nasıl Yapılır? (Rehber)",
+		// ===== APP.JSX - Connection Modal =====
+		modalTitle: "Cihaz Bağlama",
+		modalSubtitle: "LAN Paylaşımı",
+		modalDesc:
+			"Cihazınızın Wi-Fi ayarlarında <strong>Proxy</strong> kısmını <strong>Manuel</strong> yapın ve bilgileri girin.",
+		modalDescPac:
+			"Diğer cihazlarda <strong>Otomatik (PAC)</strong> kullanımı önerilir.",
+		modalPacQrHint:
+			'QR\'ı tarayıp adresi kopyalayın ve telefonunuzun <strong>Wi-Fi → Proxy → Otomatik URL</strong> kısmına yapıştırın.<br><br><span class="text-red-500 font-semibold">⚠ ÖNEMLİ:</span> Bağlantıyı sonlandırdıktan sonra internet sorunu yaşarsanız, Wi-Fi bağlantınızı kapatıp açın.',
+		modalPacUrl: "PAC Adresi (Önerilen)",
+		modalManualFallback: "Alternatif: Manuel proxy",
+		modalTabPac: "Otomatik (PAC)",
+		modalTabManual: "Manuel",
+		modalPacStep1Title: "1. Kurulum Rehberini Açın",
+		modalPacStep1Desc:
+			"Kameranızla QR kodu okutarak adım adım anlatım sayfasına gidin.",
+		modalPacStep2Title: "2. PAC Adresini Kopyalayın",
+		modalPacStep2Desc:
+			'Rehberde gösterilen "Otomatik URL" alanına bu kodu yapıştırın:',
+		modalPacWarningTitle: "DİKKAT:",
+		modalPacWarningDesc:
+			"Bypax kapatıldıktan sonra YouTube vb. uygulamalarda internet sorunu yaşarsanız (eski önbellek nedeniyle), Wi-Fi bağlantısını kapatıp açmanız yeterlidir.",
+		modalManualWarningTitle: "DİKKAT:",
+		modalManualWarningDesc:
+			"Bypax kapatıldığında internet bağlantısı tamamen kesilir. İnternete tekrar girmek için cihazınızın Wi-Fi ayarlarından Proxy'i eski haline (Yok) getirmelisiniz.",
+		modalPacQrCaption: "QR → Kurulum sayfası (tara ve kopyala)",
+		modalHost: "Sunucu (Host)",
+		modalPort: "Port",
+		modalTutorial: "Nasıl Yapılır? (Rehber)",
 
-    // ===== APP.JSX - Admin Modal =====
-    adminTitle: "Yönetici İzni Gerekli",
-    adminDesc:
-      "BypaxDPI'ın düzgün çalışması için yönetici olarak çalıştırılması gereklidir.",
-    adminStep:
-      'Uygulamaya sağ tıklayın → <strong>"Yönetici olarak çalıştır"</strong> seçin',
-    adminClose: "KAPAT",
-    adminHowItWorks: "Nasıl Çalışır?",
+		// ===== APP.JSX - Admin Modal =====
+		adminTitle: "Yönetici İzni Gerekli",
+		adminDesc:
+			"BypaxDPI'ın düzgün çalışması için yönetici olarak çalıştırılması gereklidir.",
+		adminStep:
+			'Uygulamaya sağ tıklayın → <strong>"Yönetici olarak çalıştır"</strong> seçin',
+		adminClose: "KAPAT",
+		adminHowItWorks: "Nasıl Çalışır?",
 
-    // ===== APP.JSX - No Internet =====
-    noInternetTitle: "İnternet Bağlantısı Yok",
-    noInternetDesc: "Lütfen internet bağlantınızı kontrol edin.",
-    noInternetRetry: "Tekrar Dene",
+		// ===== APP.JSX - No Internet =====
+		noInternetTitle: "İnternet Bağlantısı Yok",
+		noInternetDesc: "Lütfen internet bağlantınızı kontrol edin.",
+		noInternetRetry: "Tekrar Dene",
 
-    // ===== APP.JSX - Log Messages =====
-    logEngineStarting: (port: number) =>
-      `Bypax Motoru başlatılıyor (Port: ${port})...`,
-    logDnsUsed: (name: string, ip: string) => `Kullanılan DNS: ${name} (${ip})`,
-    logDnsDefault: "DNS: Sistem Varsayılanı",
-    logConnected: "Bağlantı başarılı! Trafik şifreleniyor.",
-    logDisconnected: "Bağlantı kesildi.",
-    logProxySet: (port: number) => `Sistem Proxy ayarlandı: 127.0.0.1:${port}`,
-    logProxyCleared: "Sistem Proxy Temizlendi",
-    logEngineStopped: (code: number) =>
-      `Bypax motoru beklenmedik şekilde durduruldu (Kod: ${code})`,
-    logEngineStartError: (err: unknown) => `Motor başlatılamadı: ${err}`,
-    logAutoReconnect: "Otomatik yeniden bağlanma aktif...",
-    logReconnecting: (n: number) => `Yeniden bağlanılıyor... (Deneme ${n}/5)`,
-    logReconnectWait: (sec: number, n: number) =>
-      `${sec} saniye sonra yeniden denenecek... (Deneme ${n}/5)`,
-    logReconnectNow: "Yeniden bağlanılıyor...",
-    logMaxRetries: "Bağlantı kurulamadı. Maksimum deneme sayısına ulaşıldı.",
-    logPossibleReasons: "Olası sebepler:",
-    logReasonInternet: "İnternet bağlantınız kesilmiş olabilir",
-    logReasonFirewall: "Firewall/Antivirüs BypaxDPI'ı engelliyor olabilir",
-    logReasonPorts: "8080-8084 portları sistem tarafından kullanılıyor",
-    logSolutions: "Çözüm önerileri:",
-    logSolInternet: "İnternet bağlantınızı kontrol edin",
-    logSolFirewall: "Firewall ayarlarınızı kontrol edin",
-    logSolAdmin: "Uygulamayı yönetici olarak çalıştırın",
-    logSolLogs: "Logları kopyalayıp destek için paylaşabilirsiniz",
-    logLanRestart:
-      "Yerel ağ paylaşımı değişti, bağlantı yeniden başlatılıyor...",
-    logDpiRestart: "DPI modu değişti, bağlantı yeniden başlatılıyor...",
-    logEngineStoppedGrace: "Bypax motoru kapatıldı.",
-    logServiceStopped: "Servis durduruldu.",
-    logShutdownStarting: "Kapatma başlatılıyor...",
-    logProcessStopped: "İşlem sonlandırıldı.",
-    logSpoofReady: (port: number) =>
-      `✓ SpoofDPI Motoru başlatıldı (Port: ${port})`,
-    logPacStarted: "✓ PAC sunucusu başlatıldı (Yerel ağ cihazları için)",
-    logPacStartError: (err: unknown) => `PAC sunucusu başlatılamadı: ${err}`,
-    logEngineActive: "✓ Bypax motoru aktif",
-    logPortBusy: (port: number) =>
-      `⚠ Port ${port} dolu, başka port deneniyor...`,
-    logInitializing: "⏳ Motor başlatılıyor...",
-    logPortRetryOpen: (port: number) =>
-      `Port ${port} açılamadı, yeniden deneniyor...`,
-    logProxyClearError: (err: unknown) => `Proxy temizleme hatası: ${err}`,
-    logProxySetError: (err: unknown) => `Proxy ayarlanamadı: ${err}`,
-    logServiceStopError: (err: unknown) => `Servis durdurma hatası: ${err}`,
-    logConfigError: (err: unknown) => `Yapılandırma hatası: ${err}`,
-    logAdminMissing: "Yönetici izni eksik! Uygulama düzgün çalışmayabilir.",
-    logInternetBack: "İnternet bağlantısı tekrar sağlandı.",
-    logInternetLost: "İnternet bağlantısı kesildi!",
-    logPortRetry: (count: number) =>
-      `Port çakışması, yeni port deneniyor... (${count}/20)`,
-    logNoPort: "Uygun port bulunamadı.",
-    logWinHttpEnabled: "Oyun Modu (WinHTTP) proxy tüneli uygulandı.",
-    logWpcapMissing:
-      "SpoofDPI, wpcap.dll kütüphanesini bulamadı. Lütfen Npcap veya WinPcap kurun ve ardından uygulamayı yeniden başlatın.",
-    logAntivirusWarning:
-      "Windows Defender veya antivirüs yazılımınız 'bypax-proxy.exe' dosyasını engellemiş olabilir. Lütfen dosyayı antivirüs dışlama listesine (exclusion) ekleyin.",
-    logFailsafePortClosed: "Beklenmeyen Hata: Proxy başlatılamadı",
-    logDirtyShutdownRecovery:
-      "⚠️ Önceki oturum düzgün kapanmamış — proxy ayarları temizlendi",
+		// ===== APP.JSX - Log Messages =====
+		logEngineStarting: (port: number) =>
+			`Bypax Motoru başlatılıyor (Port: ${port})...`,
+		logDnsUsed: (name: string, ip: string) => `Kullanılan DNS: ${name} (${ip})`,
+		logDnsDefault: "DNS: Sistem Varsayılanı",
+		logConnected: "Bağlantı başarılı! Trafik şifreleniyor.",
+		logDisconnected: "Bağlantı kesildi.",
+		logProxySet: (port: number) => `Sistem Proxy ayarlandı: 127.0.0.1:${port}`,
+		logProxyCleared: "Sistem Proxy Temizlendi",
+		logEngineStopped: (code: number) =>
+			`Bypax motoru beklenmedik şekilde durduruldu (Kod: ${code})`,
+		logEngineStartError: (err: unknown) => `Motor başlatılamadı: ${err}`,
+		logAutoReconnect: "Otomatik yeniden bağlanma aktif...",
+		logReconnecting: (n: number) => `Yeniden bağlanılıyor... (Deneme ${n}/5)`,
+		logReconnectWait: (sec: number, n: number) =>
+			`${sec} saniye sonra yeniden denenecek... (Deneme ${n}/5)`,
+		logReconnectNow: "Yeniden bağlanılıyor...",
+		logMaxRetries: "Bağlantı kurulamadı. Maksimum deneme sayısına ulaşıldı.",
+		logPossibleReasons: "Olası sebepler:",
+		logReasonInternet: "İnternet bağlantınız kesilmiş olabilir",
+		logReasonFirewall: "Firewall/Antivirüs BypaxDPI'ı engelliyor olabilir",
+		logReasonPorts: "8080-8084 portları sistem tarafından kullanılıyor",
+		logSolutions: "Çözüm önerileri:",
+		logSolInternet: "İnternet bağlantınızı kontrol edin",
+		logSolFirewall: "Firewall ayarlarınızı kontrol edin",
+		logSolAdmin: "Uygulamayı yönetici olarak çalıştırın",
+		logSolLogs: "Logları kopyalayıp destek için paylaşabilirsiniz",
+		logLanRestart:
+			"Yerel ağ paylaşımı değişti, bağlantı yeniden başlatılıyor...",
+		logDpiRestart: "DPI modu değişti, bağlantı yeniden başlatılıyor...",
+		logEngineStoppedGrace: "Bypax motoru kapatıldı.",
+		logServiceStopped: "Servis durduruldu.",
+		logShutdownStarting: "Kapatma başlatılıyor...",
+		logProcessStopped: "İşlem sonlandırıldı.",
+		logSpoofReady: (port: number) =>
+			`✓ SpoofDPI Motoru başlatıldı (Port: ${port})`,
+		logPacStarted: "✓ PAC sunucusu başlatıldı (Yerel ağ cihazları için)",
+		logPacStartError: (err: unknown) => `PAC sunucusu başlatılamadı: ${err}`,
+		logEngineActive: "✓ Bypax motoru aktif",
+		logPortBusy: (port: number) =>
+			`⚠ Port ${port} dolu, başka port deneniyor...`,
+		logInitializing: "⏳ Motor başlatılıyor...",
+		logPortRetryOpen: (port: number) =>
+			`Port ${port} açılamadı, yeniden deneniyor...`,
+		logProxyClearError: (err: unknown) => `Proxy temizleme hatası: ${err}`,
+		logProxySetError: (err: unknown) => `Proxy ayarlanamadı: ${err}`,
+		logServiceStopError: (err: unknown) => `Servis durdurma hatası: ${err}`,
+		logConfigError: (err: unknown) => `Yapılandırma hatası: ${err}`,
+		logAdminMissing: "Yönetici izni eksik! Uygulama düzgün çalışmayabilir.",
+		logInternetBack: "İnternet bağlantısı tekrar sağlandı.",
+		logInternetLost: "İnternet bağlantısı kesildi!",
+		logPortRetry: (count: number) =>
+			`Port çakışması, yeni port deneniyor... (${count}/20)`,
+		logNoPort: "Uygun port bulunamadı.",
+		logWinHttpEnabled: "Oyun Modu (WinHTTP) proxy tüneli uygulandı.",
+		logWpcapMissing:
+			"SpoofDPI, wpcap.dll kütüphanesini bulamadı. Lütfen Npcap veya WinPcap kurun ve ardından uygulamayı yeniden başlatın.",
+		logAntivirusWarning:
+			"Windows Defender veya antivirüs yazılımınız 'bypax-proxy.exe' dosyasını engellemiş olabilir. Lütfen dosyayı antivirüs dışlama listesine (exclusion) ekleyin.",
+		logFailsafePortClosed: "Beklenmeyen Hata: Proxy başlatılamadı",
+		logDirtyShutdownRecovery:
+			"⚠️ Önceki oturum düzgün kapanmamış — proxy ayarları temizlendi",
 
-    // ===== SETTINGS.JSX =====
-    settingsTitle: "AYARLAR",
+		// ===== SETTINGS.JSX =====
+		settingsTitle: "AYARLAR",
 
-    // Section: Connection Method
-    sectionMethod: "BAĞLANTI YÖNTEMİ",
-    sectionMethodWhy:
-      "Tek ayar, tüm ISS'ler. LAN ile tüm cihazlarda kullanın. Proxy tabanlı olduğu için oyunlarda ping/jitter yapmaz.",
-    methodStrong: "Güçlü Mod",
-    methodStrongDesc: "En güçlü bypass, zor ISP'ler için (latency ekler)",
-    methodTurbo: "Turbo Mod",
-    methodTurboDesc: "En düşük gecikme, hafif DPI için",
-    methodBalanced: "Dengeli Mod (Önerilen)",
-    methodBalancedDesc: "Hızlı + güçlü bypass, çoğu ISP'de çalışır",
+		// Section: Connection Method
+		sectionMethod: "BAĞLANTI YÖNTEMİ",
+		sectionMethodWhy:
+			"Tek ayar, tüm ISS'ler. LAN ile tüm cihazlarda kullanın. Proxy tabanlı olduğu için oyunlarda ping/jitter yapmaz.",
+		methodStrong: "Güçlü Mod",
+		methodStrongDesc: "En güçlü bypass, zor ISP'ler için (latency ekler)",
+		methodTurbo: "Turbo Mod",
+		methodTurboDesc: "En düşük gecikme, hafif DPI için",
+		methodBalanced: "Dengeli Mod (Önerilen)",
+		methodBalancedDesc: "Hızlı + güçlü bypass, çoğu ISP'de çalışır",
 
-    // Section: Advanced (Güçlü mod)
-    sectionAdvanced: "GELİŞMİŞ",
-    chunkSizeLabel: "Parça boyutu (chunk size)",
-    chunkSizeDesc:
-      "HTTPS trafiğini kaç parçaya böleceğini belirler. ISS'e göre 4 veya 16 daha hızlı olabilir; 8 çoğu zaman dengeli (varsayılan). Deneyerek en iyisini seçebilirsiniz.",
-    chunkSize4: "4 — En güçlü (bazı ISS'ler)",
-    chunkSize8: "8 — Dengeli (varsayılan)",
-    chunkSize16: "16 — Daha hızlı (bazı ISS'ler)",
+		// Section: Advanced (Güçlü mod)
+		sectionAdvanced: "GELİŞMİŞ",
+		chunkSizeLabel: "Parça boyutu (chunk size)",
+		chunkSizeDesc:
+			"HTTPS trafiğini kaç parçaya böleceğini belirler. ISS'e göre 4 veya 16 daha hızlı olabilir; 8 çoğu zaman dengeli (varsayılan). Deneyerek en iyisini seçebilirsiniz.",
+		chunkSize4: "4 — En güçlü (bazı ISS'ler)",
+		chunkSize8: "8 — Dengeli (varsayılan)",
+		chunkSize16: "16 — Daha hızlı (bazı ISS'ler)",
 
-    // Section: Network
-    sectionNetwork: "AĞ AYARLARI",
-    lanSharing: "Yerel Ağ Paylaşımı",
-    lanSharingDesc: "Diğer cihazlardan (Tel, Konsol) bağlanmaya izin ver",
+		// Section: Network
+		sectionNetwork: "AĞ AYARLARI",
+		lanSharing: "Yerel Ağ Paylaşımı",
+		lanSharingDesc: "Diğer cihazlardan (Tel, Konsol) bağlanmaya izin ver",
 
-    // Section: Automation
-    sectionAutomation: "OTOMASYON",
-    autoConnect: "Otomatik Bağlan",
-    autoConnectDesc: "Uygulama açılır açılmaz bağlan",
-    autoReconnect: "Otomatik Yeniden Bağlan",
-    autoReconnectDesc: "Bağlantı koparsa otomatik yeniden dene",
+		// Section: Automation
+		sectionAutomation: "OTOMASYON",
+		autoConnect: "Otomatik Bağlan",
+		autoConnectDesc: "Uygulama açılır açılmaz bağlan",
+		autoReconnect: "Otomatik Yeniden Bağlan",
+		autoReconnectDesc: "Bağlantı koparsa otomatik yeniden dene",
 
-    // Section: General
-    sectionGeneral: "GENEL",
-    autoStart: "Başlangıçta Çalıştır",
-    autoStartDesc: "Windows açılınca BypaxDPI'ı başlat",
-    minimizeToTray: "Tepsiye Küçült",
-    minimizeToTrayDesc: "Kapatıldığında arka planda çalışsın",
-    alwaysOnTop: "Her Şeyin Üzerinde Tut",
-    alwaysOnTopDesc: "Pencere her zaman diğer pencerelerin üzerinde kalır",
-    requireConfirmation: "İşlem Onayı",
-    requireConfirmationDesc: "Bağlantıyı keserken veya çıkarken sor",
-    language: "UYGULAMA DILI",
-    languageDesc: "Arayüz dilini değiştirin",
+		// Section: General
+		sectionGeneral: "GENEL",
+		autoStart: "Başlangıçta Çalıştır",
+		autoStartDesc: "Windows açılınca BypaxDPI'ı başlat",
+		minimizeToTray: "Tepsiye Küçült",
+		minimizeToTrayDesc: "Kapatıldığında arka planda çalışsın",
+		alwaysOnTop: "Her Şeyin Üzerinde Tut",
+		alwaysOnTopDesc: "Pencere her zaman diğer pencerelerin üzerinde kalır",
+		requireConfirmation: "İşlem Onayı",
+		requireConfirmationDesc: "Bağlantıyı keserken veya çıkarken sor",
+		language: "UYGULAMA DILI",
+		languageDesc: "Arayüz dilini değiştirin",
 
-    // Section: Notifications
-    sectionNotifications: "BİLDİRİMLER",
-    notifications: "Masaüstü Bildirimleri",
-    notificationsDesc: "Ana bildirim anahtarı (Tümünü Aç/Kapat)",
-    notifyOnConnect: "Bağlantı Kurulduğunda",
-    notifyOnConnectDesc: "Bağlantı başarıyla sağlandığında bildir",
-    notifyOnDisconnect: "Bağlantı Koptuğunda",
-    notifyOnDisconnectDesc: "Beklenmedik kopmalarda bildir",
-    notifDisconnectManual: "Bağlantı başarıyla sonlandırıldı.",
+		// Section: Notifications
+		sectionNotifications: "BİLDİRİMLER",
+		notifications: "Masaüstü Bildirimleri",
+		notificationsDesc: "Ana bildirim anahtarı (Tümünü Aç/Kapat)",
+		notifyOnConnect: "Bağlantı Kurulduğunda",
+		notifyOnConnectDesc: "Bağlantı başarıyla sağlandığında bildir",
+		notifyOnDisconnect: "Bağlantı Koptuğunda",
+		notifyOnDisconnectDesc: "Beklenmedik kopmalarda bildir",
+		notifDisconnectManual: "Bağlantı başarıyla sonlandırıldı.",
 
-    // Section: DNS
-    sectionDns: "DNS LİSTESİ",
-    dnsAutoSelect: "Otomatik Seçim (Önerilen)",
-    dnsAutoSelectDesc: "En hızlı sunucuyu otomatik bulur",
-    dnsSystemDefault: "Sistem Varsayılanı",
-    dnsSystemDefaultDesc: "SpoofDPI Varsayılan DNS",
-    dnsCfDesc: "Hızlı ve Gizli",
-    dnsAdguardDesc: "Reklam Engelleyici",
-    dnsGoogleDesc: "Güvenilir",
-    dnsQuad9Desc: "Güvenlik Odaklı",
-    dnsOpenDnsDesc: "Cisco Güvencesi",
-    dnsCheckSpeed: "DNS Ping Test",
-    dnsChecking: "Ölçülüyor...",
+		// Section: DNS
+		sectionDns: "DNS LİSTESİ",
+		dnsAutoSelect: "Otomatik Seçim (Önerilen)",
+		dnsAutoSelectDesc: "En hızlı sunucuyu otomatik bulur",
+		dnsSystemDefault: "Sistem Varsayılanı",
+		dnsSystemDefaultDesc: "SpoofDPI Varsayılan DNS",
+		dnsCfDesc: "Hızlı ve Gizli",
+		dnsAdguardDesc: "Reklam Engelleyici",
+		dnsGoogleDesc: "Güvenilir",
+		dnsQuad9Desc: "Güvenlik Odaklı",
+		dnsOpenDnsDesc: "Cisco Güvencesi",
+		dnsCheckSpeed: "DNS Ping Test",
+		dnsChecking: "Ölçülüyor...",
 
-    // Section: Driver
-    driverStatusInstalled: "Gelişmiş Filtreleme Aktif",
-    driverStatusMissing: "Bypass çalışmazsa gelişmiş özellikleri açın",
-    driverInstallBtn: "SÜRÜCÜYÜ KUR (ÖNERİLEN)",
-    driverIspWarning:
-      "Eğer bağlantı sorunu yaşıyorsanız, sürücü yükleyerek çok daha gelişmiş DPI aşma özelliklerini açabilirsiniz.",
+		// Section: Driver
+		driverStatusInstalled: "Gelişmiş Filtreleme Aktif",
+		driverStatusMissing: "Bypass çalışmazsa gelişmiş özellikleri açın",
+		driverInstallBtn: "SÜRÜCÜYÜ KUR (ÖNERİLEN)",
+		driverIspWarning:
+			"Eğer bağlantı sorunu yaşıyorsanız, sürücü yükleyerek çok daha gelişmiş DPI aşma özelliklerini açabilirsiniz.",
 
-    // ISS Overlay (İlk Giriş)
-    issOverlayTitle: "İnternet Sağlayıcınızı Seçin",
-    issOverlayDesc:
-      "En iyi performans için sağlayıcınıza özel ayarları otomatik uygulayalım.",
-    issOverlayApply: "UYGULA VE BAĞLAN",
-    issOverlaySkip: "Atla",
-    issProfileActive: "Profil Aktif",
-    issProfileSee: "Tavsiye edilen ayarı gör",
-    issApplyBtn: "Ayarları Otomatik Uygula",
-    issAppliedMsg: "Bu ayar şu an kullanılıyor",
+		// ISS Overlay (İlk Giriş)
+		issOverlayTitle: "İnternet Sağlayıcınızı Seçin",
+		issOverlayDesc:
+			"En iyi performans için sağlayıcınıza özel ayarları otomatik uygulayalım.",
+		issOverlayApply: "UYGULA VE BAĞLAN",
+		issOverlaySkip: "Atla",
+		issProfileActive: "Profil Aktif",
+		issProfileSee: "Tavsiye edilen ayarı gör",
+		issApplyBtn: "Ayarları Otomatik Uygula",
+		issAppliedMsg: "Bu ayar şu an kullanılıyor",
 
-    // ISS Rehberi (Settings)
-    issGuideTitle: "İNTERNET SAĞLAYICI REHBERİ",
-    issLightName: "TurkNet",
-    issLightDesc:
-      "Hafif filtreleme yaparlar. Turbo Mod sayesinde oyunlarda ping artışı veya hız kaybı yaşamazsınız.",
-    issMidName: "Sadece Bazı ISSler",
-    issMidDesc:
-      "Standart engellemeler yaparlar. Güçlü Mod ile paketleri bölerek sorunsuz erişim sağlar.",
-    issHeavyName:
-      "Türk Telekom / Vodafone / Kablonet / Superonline / Milenicom",
-    issHeavyDesc:
-      "Zorlu ve akıllı DPI cihazları kullanırlar. Sisteme sahte paketler göndererek kandıran Güçlü Mod gerektirebilir.",
-    issOtherName: "Diğer / Bilmiyorum",
-    issOtherDesc:
-      "Güçlü Mod ile başlar. Çoğu sağlayıcıda sorunsuz çalışır, gerekirse Turbo Mod'a geçebilirsiniz.",
+		// ISS Rehberi (Settings)
+		issGuideTitle: "İNTERNET SAĞLAYICI REHBERİ",
+		issLightName: "TurkNet",
+		issLightDesc:
+			"Hafif filtreleme yaparlar. Turbo Mod sayesinde oyunlarda ping artışı veya hız kaybı yaşamazsınız.",
+		issMidName: "Sadece Bazı ISSler",
+		issMidDesc:
+			"Standart engellemeler yaparlar. Güçlü Mod ile paketleri bölerek sorunsuz erişim sağlar.",
+		issHeavyName:
+			"Türk Telekom / Vodafone / Kablonet / Superonline / Milenicom",
+		issHeavyDesc:
+			"Zorlu ve akıllı DPI cihazları kullanırlar. Sisteme sahte paketler göndererek kandıran Güçlü Mod gerektirebilir.",
+		issOtherName: "Diğer / Bilmiyorum",
+		issOtherDesc:
+			"Güçlü Mod ile başlar. Çoğu sağlayıcıda sorunsuz çalışır, gerekirse Turbo Mod'a geçebilirsiniz.",
 
-    // Bypass Ayarları
-    sectionBypass: "DETAYLI BYPASS AYARLARI",
-    modeTurboName: "Turbo Mod",
-    modeTurboDesc: "En düşük gecikme. Hafif filtreleri anında aşar.",
-    modeBalancedName: "Dengeli Mod",
-    modeBalancedDesc: "Hızlı ve stabil. Standart filtreleri aşar.",
-    modeStrongName: "Güçlü Mod",
-    modeStrongDesc: "Zorlu DPI'ları sahte paketlerle kandırır.",
+		// Bypass Ayarları
+		sectionBypass: "DETAYLI BYPASS AYARLARI",
+		modeTurboName: "Turbo Mod",
+		modeTurboDesc: "En düşük gecikme. Hafif filtreleri anında aşar.",
+		modeBalancedName: "Dengeli Mod",
+		modeBalancedDesc: "Hızlı ve stabil. Standart filtreleri aşar.",
+		modeStrongName: "Güçlü Mod",
+		modeStrongDesc: "Zorlu DPI'ları sahte paketlerle kandırır.",
 
-    // Ekstra Ağ
-    sectionExtraNetwork: "EKSTRA AĞ AYARLARI",
-    ipv4ForceTitle: "IPv4'e Zorla (Önerilen)",
-    ipv4ForceDesc:
-      "Sonsuz yükleme ve Zaman Aşımı (Timeout) hatalarını engeller.",
-    winHttpForceTitle: "Oyun Modu (WinHTTP Proxy)",
-    winHttpForceDesc:
-      "C++ ile yazılmış masaüstü oyunların ve servislerin arka planda DPI engelini aşmasını sağlar.",
+		// Ekstra Ağ
+		sectionExtraNetwork: "EKSTRA AĞ AYARLARI",
+		ipv4ForceTitle: "IPv4'e Zorla (Önerilen)",
+		ipv4ForceDesc:
+			"Sonsuz yükleme ve Zaman Aşımı (Timeout) hatalarını engeller.",
+		winHttpForceTitle: "Oyun Modu (WinHTTP Proxy)",
+		winHttpForceDesc:
+			"C++ ile yazılmış masaüstü oyunların ve servislerin arka planda DPI engelini aşmasını sağlar.",
 
-    // Gelişmiş (Npcap)
-    sectionAdvancedNpcap: "GELİŞMİŞ AYARLAR",
-    advancedNpcapDesc:
-      "Ağır DPI önlemleri olan sağlayıcılar için (Kablonet, Superonline vb.) gelişmiş paket manipülasyonu gerektirir.",
-    advancedNpcapInstalled: "Npcap Kurulu — Gelişmiş özellikler aktif",
-    advancedNpcapMissing: "Npcap kurulu değil — Güçlü mod kısıtlı çalışır",
-    advancedNpcapInstallBtn: "NPCAP SÜRÜCÜSÜNÜ KUR",
-    advancedNpcapWhy:
-      "Npcap, ağ paketlerine düşük seviyede erişim sağlar. Bu sayede sahte paket (fake packet) gönderme gibi gelişmiş DPI aşma teknikleri kullanılabilir.",
-    advancedFeaturesToggle: "Gelişmiş Bypass",
-    advancedFeaturesToggleDesc:
-      "Sahte paket gönderme ve gelişmiş DPI aşma tekniklerini aktif eder.",
-    npcapRestartWarning:
-      "Npcap'in çalışabilmesi için bilgisayarınızı yeniden başlatmanız gerekiyor.",
-    logStrongFake: "🚀 Güçlü Mod: Fake Paket (3) aktif.",
-    logStrongNoDriver: "⚠️ Güçlü Mod: Sürücü yok, sadece Chunk-1 aktif.",
-    logStrongChunkOnly: "🛡️ Güçlü Mod: Chunk-1 aktif.",
-    logNpcapFallback:
-      "⚠️ Npcap sürücüsü yanıt vermiyor. Gelişmiş bypass kapatılıp tekrar deneniyor...",
-    advancedNpcapHint: "Daha güçlü bypass için Npcap sürücüsünü kurun",
+		// Gelişmiş (Npcap)
+		sectionAdvancedNpcap: "GELİŞMİŞ AYARLAR",
+		advancedNpcapDesc:
+			"Ağır DPI önlemleri olan sağlayıcılar için (Kablonet, Superonline vb.) gelişmiş paket manipülasyonu gerektirir.",
+		advancedNpcapInstalled: "Npcap Kurulu — Gelişmiş özellikler aktif",
+		advancedNpcapMissing: "Npcap kurulu değil — Güçlü mod kısıtlı çalışır",
+		advancedNpcapInstallBtn: "NPCAP SÜRÜCÜSÜNÜ KUR",
+		advancedNpcapWhy:
+			"Npcap, ağ paketlerine düşük seviyede erişim sağlar. Bu sayede sahte paket (fake packet) gönderme gibi gelişmiş DPI aşma teknikleri kullanılabilir.",
+		advancedFeaturesToggle: "Gelişmiş Bypass",
+		advancedFeaturesToggleDesc:
+			"Sahte paket gönderme ve gelişmiş DPI aşma tekniklerini aktif eder.",
+		npcapRestartWarning:
+			"Npcap'in çalışabilmesi için bilgisayarınızı yeniden başlatmanız gerekiyor.",
+		logStrongFake: "🚀 Güçlü Mod: Fake Paket (3) aktif.",
+		logStrongNoDriver: "⚠️ Güçlü Mod: Sürücü yok, sadece Chunk-1 aktif.",
+		logStrongChunkOnly: "🛡️ Güçlü Mod: Chunk-1 aktif.",
+		logNpcapFallback:
+			"⚠️ Npcap sürücüsü yanıt vermiyor. Gelişmiş bypass kapatılıp tekrar deneniyor...",
+		advancedNpcapHint: "Daha güçlü bypass için Npcap sürücüsünü kurun",
 
-    // Section: Troubleshooting
-    sectionTroubleshoot: "SORUN GİDERME",
-    fixInternet: "İnternet Bağlantısını Onar",
-    fixInternetDesc: "Proxy takılı kalırsa interneti otomatik düzeltir.",
-    fixRepairing: "Onarılıyor...",
-    fixRepairingDesc: "Sistem ayarları sıfırlanıyor, lütfen bekleyin.",
-    fixDone: "Onarıldı!",
-    fixDoneDesc: "Proxy ayarları temizlendi ve internet onarıldı.",
-    fixError: "Hata Oluştu!",
-    fixErrorDesc: "İşlem sırasında bir sorun meydana geldi.",
+		// Section: Troubleshooting
+		sectionTroubleshoot: "SORUN GİDERME",
+		fixInternet: "İnternet Bağlantısını Onar",
+		fixInternetDesc: "Proxy takılı kalırsa interneti otomatik düzeltir.",
+		fixRepairing: "Onarılıyor...",
+		fixRepairingDesc: "Sistem ayarları sıfırlanıyor, lütfen bekleyin.",
+		fixDone: "Onarıldı!",
+		fixDoneDesc: "Proxy ayarları temizlendi ve internet onarıldı.",
+		fixError: "Hata Oluştu!",
+		fixErrorDesc: "İşlem sırasında bir sorun meydana geldi.",
 
-    // Section: Developer
-    sectionDev: "GELİŞTİRİCİ",
-    devRole: "BypaxDPI Geliştiricisi",
-    devSubscribe: "Abone Ol",
-    devSupport: "Destekle",
+		// Section: Developer
+		sectionDev: "GELİŞTİRİCİ",
+		devRole: "BypaxDPI Geliştiricisi",
+		devSubscribe: "Abone Ol",
+		devSupport: "Destekle",
 
-    // Section: Important Notice
-    sectionNotice: "ÖNEMLİ BİLGİ",
-    noticeTitle: "Güvenlik ve Yanlış Pozitif",
-    noticeDesc:
-      'Bypax motoru, Windows Defender AI gibi yapay zeka tabanlı sistemler tarafından bazen "yanlış pozitif" olarak algılanabilir. Bu durum tamamen zararsızdır. Ayrıca Kaspersky, ESET gibi yazılımlar HTTPS tarama özelliğiyle bağlantıyı engelleyebilir. Erişim sorunu yaşarsanız bu ayarları kontrol edin.',
+		// Section: Important Notice
+		sectionNotice: "ÖNEMLİ BİLGİ",
+		noticeTitle: "Güvenlik ve Yanlış Pozitif",
+		noticeDesc:
+			'Bypax motoru, Windows Defender AI gibi yapay zeka tabanlı sistemler tarafından bazen "yanlış pozitif" olarak algılanabilir. Bu durum tamamen zararsızdır. Ayrıca Kaspersky, ESET gibi yazılımlar HTTPS tarama özelliğiyle bağlantıyı engelleyebilir. Erişim sorunu yaşarsanız bu ayarları kontrol edin.',
 
-    // Dialogs
-    confirmExitTitle: "Çıkış",
-    confirmExitDesc:
-      "Bypax motorunu durdurup çıkmak istediğinize emin misiniz?",
-    confirmDisconnectTitle: "Bağlantıyı Kes",
-    confirmDisconnectDesc:
-      "Güvenli bağlantınızı sonlandırmak istediğinize emin misiniz?",
-    btnNo: "İptal",
-    btnYes: "Onayla",
+		// Dialogs
+		confirmExitTitle: "Çıkış",
+		confirmExitDesc:
+			"Bypax motorunu durdurup çıkmak istediğinize emin misiniz?",
+		confirmDisconnectTitle: "Bağlantıyı Kes",
+		confirmDisconnectDesc:
+			"Güvenli bağlantınızı sonlandırmak istediğinize emin misiniz?",
+		btnNo: "İptal",
+		btnYes: "Onayla",
 
-    // Settings Tabs
-    tabGeneral: "GENEL",
-    tabNetwork: "AĞ",
-    tabNotification: "BİLDİRİM",
-    tabSystem: "SİSTEM",
-  },
+		// Settings Tabs
+		tabGeneral: "GENEL",
+		tabNetwork: "AĞ",
+		tabNotification: "BİLDİRİM",
+		tabSystem: "SİSTEM",
+	},
 
-  "en": {
-    // ===== APP.JSX - Header =====
-    appName: "BYPAXDPI",
-    statusActive: "ACTIVE",
-    statusInactive: "OFF",
-    statusReady: "READY",
+	en: {
+		// ===== APP.JSX - Header =====
+		appName: "BYPAXDPI",
+		statusActive: "ACTIVE",
+		statusInactive: "OFF",
+		statusReady: "READY",
 
-    // ===== APP.JSX - Main Status =====
-    statusConnected: "SECURE",
-    statusConnecting: "CONNECTING...",
-    statusDisconnecting: "DISCONNECTING...",
-    statusReady2: "READY",
-    descConnected: "Your connection is encrypted and protected.",
-    descConnecting: "Processing, please wait.",
-    descReady: "Connect for DPI Bypass.",
+		// ===== APP.JSX - Main Status =====
+		statusConnected: "SECURE",
+		statusConnecting: "CONNECTING...",
+		statusDisconnecting: "DISCONNECTING...",
+		statusReady2: "READY",
+		descConnected: "Your connection is encrypted and protected.",
+		descConnecting: "Processing, please wait.",
+		descReady: "Connect for DPI Bypass.",
 
-    // ===== APP.JSX - Buttons =====
-    btnConnect: "CONNECT",
-    btnDisconnect: "DISCONNECT",
-    btnConnecting: "CONNECTING...",
-    btnApplyingSettings: "APPLYING SETTINGS...",
-    btnDisconnecting: "DISCONNECTING...",
-    btnConnectDevices: "Connect Other Devices",
+		// ===== APP.JSX - Buttons =====
+		btnConnect: "CONNECT",
+		btnDisconnect: "DISCONNECT",
+		btnConnecting: "CONNECTING...",
+		btnApplyingSettings: "APPLYING SETTINGS...",
+		btnDisconnecting: "DISCONNECTING...",
+		btnConnectDevices: "Connect Other Devices",
 
-    // ===== APP.JSX - Bottom Nav =====
-    navSettings: "SETTINGS",
-    navLogs: "LOGS",
-    navExit: "EXIT",
+		// ===== APP.JSX - Bottom Nav =====
+		navSettings: "SETTINGS",
+		navLogs: "LOGS",
+		navExit: "EXIT",
 
-    // ===== APP.JSX - Logs Panel =====
-    logsTitle: "SYSTEM LOGS",
-    logsClear: "CLEAR",
-    logsCopy: "COPY",
-    logsCopied: "COPIED!",
-    logsCopyError: "ERROR!",
+		// ===== APP.JSX - Logs Panel =====
+		logsTitle: "SYSTEM LOGS",
+		logsClear: "CLEAR",
+		logsCopy: "COPY",
+		logsCopied: "COPIED!",
+		logsCopyError: "ERROR!",
 
-    // ===== APP.JSX - Connection Modal =====
-    modalTitle: "Connect Device",
-    modalSubtitle: "LAN Sharing",
-    modalDesc:
-      "Go to your device's Wi-Fi settings, set <strong>Proxy</strong> to <strong>Manual</strong> and enter the details below.",
-    modalDescPac:
-      "Using <strong>Automatic (PAC)</strong> on other devices is recommended.",
-    modalPacQrHint:
-      "Scan the QR, copy the address and paste it into your device's <strong>Wi-Fi → Proxy → Automatic URL</strong> settings.<br><br><span class=\"text-red-500 font-semibold\">⚠ IMPORTANT:</span> If you experience network issues after disconnecting, turn your device's Wi-Fi off and on again.",
-    modalPacUrl: "PAC URL (Recommended)",
-    modalManualFallback: "Alternative: Manual proxy",
-    modalTabPac: "Automatic (PAC)",
-    modalTabManual: "Manual",
-    modalPacStep1Title: "1. Open Setup Guide",
-    modalPacStep1Desc:
-      "Scan the QR code with your camera to open the step-by-step guide.",
-    modalPacStep2Title: "2. Copy PAC Address",
-    modalPacStep2Desc:
-      'Paste this code into the "Automatic URL" field shown in the guide:',
-    modalPacWarningTitle: "ATTENTION:",
-    modalPacWarningDesc:
-      "If apps like YouTube lose internet access after closing Bypax (due to cached connections), simply toggle your device's Wi-Fi off and on.",
-    modalManualWarningTitle: "ATTENTION:",
-    modalManualWarningDesc:
-      "When Bypax is closed, your device will completely lose internet access. To restore connection, you must remove the Proxy setting from your Wi-Fi settings.",
-    modalPacQrCaption: "QR → Setup page (scan and copy)",
-    modalHost: "Server (Host)",
-    modalPort: "Port",
-    modalTutorial: "How To? (Guide)",
+		// ===== APP.JSX - Connection Modal =====
+		modalTitle: "Connect Device",
+		modalSubtitle: "LAN Sharing",
+		modalDesc:
+			"Go to your device's Wi-Fi settings, set <strong>Proxy</strong> to <strong>Manual</strong> and enter the details below.",
+		modalDescPac:
+			"Using <strong>Automatic (PAC)</strong> on other devices is recommended.",
+		modalPacQrHint:
+			"Scan the QR, copy the address and paste it into your device's <strong>Wi-Fi → Proxy → Automatic URL</strong> settings.<br><br><span class=\"text-red-500 font-semibold\">⚠ IMPORTANT:</span> If you experience network issues after disconnecting, turn your device's Wi-Fi off and on again.",
+		modalPacUrl: "PAC URL (Recommended)",
+		modalManualFallback: "Alternative: Manual proxy",
+		modalTabPac: "Automatic (PAC)",
+		modalTabManual: "Manual",
+		modalPacStep1Title: "1. Open Setup Guide",
+		modalPacStep1Desc:
+			"Scan the QR code with your camera to open the step-by-step guide.",
+		modalPacStep2Title: "2. Copy PAC Address",
+		modalPacStep2Desc:
+			'Paste this code into the "Automatic URL" field shown in the guide:',
+		modalPacWarningTitle: "ATTENTION:",
+		modalPacWarningDesc:
+			"If apps like YouTube lose internet access after closing Bypax (due to cached connections), simply toggle your device's Wi-Fi off and on.",
+		modalManualWarningTitle: "ATTENTION:",
+		modalManualWarningDesc:
+			"When Bypax is closed, your device will completely lose internet access. To restore connection, you must remove the Proxy setting from your Wi-Fi settings.",
+		modalPacQrCaption: "QR → Setup page (scan and copy)",
+		modalHost: "Server (Host)",
+		modalPort: "Port",
+		modalTutorial: "How To? (Guide)",
 
-    // ===== APP.JSX - Admin Modal =====
-    adminTitle: "Administrator Required",
-    adminDesc: "BypaxDPI needs to run as administrator to work correctly.",
-    adminStep:
-      'Right-click the app → Select <strong>"Run as administrator"</strong>',
-    adminClose: "CLOSE",
-    adminHowItWorks: "How it Works?",
+		// ===== APP.JSX - Admin Modal =====
+		adminTitle: "Administrator Required",
+		adminDesc: "BypaxDPI needs to run as administrator to work correctly.",
+		adminStep:
+			'Right-click the app → Select <strong>"Run as administrator"</strong>',
+		adminClose: "CLOSE",
+		adminHowItWorks: "How it Works?",
 
-    // ===== APP.JSX - No Internet =====
-    noInternetTitle: "No Internet Connection",
-    noInternetDesc: "Please check your internet connection.",
-    noInternetRetry: "Retry",
+		// ===== APP.JSX - No Internet =====
+		noInternetTitle: "No Internet Connection",
+		noInternetDesc: "Please check your internet connection.",
+		noInternetRetry: "Retry",
 
-    // ===== APP.JSX - Log Messages =====
-    logEngineStarting: (port: number) =>
-      `Bypax Engine starting (Port: ${port})...`,
-    logDnsUsed: (name: string, ip: string) => `DNS: ${name} (${ip})`,
-    logDnsDefault: "DNS: System Default",
-    logConnected: "Connection successful! Traffic is encrypted.",
-    logDisconnected: "Disconnected.",
-    logProxySet: (port: number) => `System Proxy set: 127.0.0.1:${port}`,
-    logProxyCleared: "System Proxy Cleared",
-    logEngineStopped: (code: number) =>
-      `Bypax engine stopped unexpectedly (Code: ${code})`,
-    logEngineStartError: (err: unknown) => `Engine failed to start: ${err}`,
-    logAutoReconnect: "Auto-reconnect enabled...",
-    logReconnecting: (n: number) => `Reconnecting... (Attempt ${n}/5)`,
-    logReconnectWait: (sec: number, n: number) =>
-      `Retrying in ${sec} seconds... (Attempt ${n}/5)`,
-    logReconnectNow: "Reconnecting...",
-    logMaxRetries: "Connection failed. Maximum attempts reached.",
-    logPossibleReasons: "Possible reasons:",
-    logReasonInternet: "Your internet may be disconnected",
-    logReasonFirewall: "Firewall/Antivirus may be blocking Bypax",
-    logReasonPorts: "Ports 8080-8084 may be in use",
-    logSolutions: "Suggested solutions:",
-    logSolInternet: "Check your internet connection",
-    logSolFirewall: "Check your firewall settings",
-    logSolAdmin: "Run the application as administrator",
-    logSolLogs: "Copy and share logs for support",
-    logLanRestart: "LAN sharing changed, restarting connection...",
-    logDpiRestart: "DPI mode changed, restarting connection...",
-    logEngineStoppedGrace: "Bypax engine stopped.",
-    logServiceStopped: "Service stopped.",
-    logShutdownStarting: "Shutdown started...",
-    logProcessStopped: "Process stopped.",
-    logSpoofReady: (port: number) =>
-      `✓ SpoofDPI engine started (Port: ${port})`,
-    logPacStarted: "✓ PAC server started (for LAN devices)",
-    logPacStartError: (err: unknown) => `PAC server failed to start: ${err}`,
-    logEngineActive: "✓ Bypax engine active",
-    logPortBusy: (port: number) =>
-      `⚠ Port ${port} is busy, trying another one...`,
-    logInitializing: "⏳ Engine is initializing...",
-    logPortRetryOpen: (port: number) =>
-      `Port ${port} could not be opened, retrying...`,
-    logProxyClearError: (err: unknown) => `Failed to clear proxy: ${err}`,
-    logProxySetError: (err: unknown) => `Failed to set proxy: ${err}`,
-    logServiceStopError: (err: unknown) => `Failed to stop service: ${err}`,
-    logConfigError: (err: unknown) => `Configuration error: ${err}`,
-    logAdminMissing: "Admin permission missing! App may not work correctly.",
-    logInternetBack: "Internet connection restored.",
-    logInternetLost: "Internet connection lost!",
-    logPortRetry: (count: number) =>
-      `Port conflict, trying new port... (${count}/20)`,
-    logNoPort: "No available port found.",
-    logWinHttpEnabled: "Game Mode (WinHTTP) proxy tunnel applied.",
-    logWpcapMissing:
-      "SpoofDPI could not find wpcap.dll. Please install Npcap or WinPcap, then restart the application.",
-    logAntivirusWarning:
-      "Windows Defender or your antivirus software may have blocked 'bypax-proxy.exe'. Please add the file to your antivirus exclusion list.",
-    logFailsafePortClosed: "Unexpected error: Proxy could not start",
-    logDirtyShutdownRecovery:
-      "⚠️ Previous session did not close cleanly — proxy settings cleared",
+		// ===== APP.JSX - Log Messages =====
+		logEngineStarting: (port: number) =>
+			`Bypax Engine starting (Port: ${port})...`,
+		logDnsUsed: (name: string, ip: string) => `DNS: ${name} (${ip})`,
+		logDnsDefault: "DNS: System Default",
+		logConnected: "Connection successful! Traffic is encrypted.",
+		logDisconnected: "Disconnected.",
+		logProxySet: (port: number) => `System Proxy set: 127.0.0.1:${port}`,
+		logProxyCleared: "System Proxy Cleared",
+		logEngineStopped: (code: number) =>
+			`Bypax engine stopped unexpectedly (Code: ${code})`,
+		logEngineStartError: (err: unknown) => `Engine failed to start: ${err}`,
+		logAutoReconnect: "Auto-reconnect enabled...",
+		logReconnecting: (n: number) => `Reconnecting... (Attempt ${n}/5)`,
+		logReconnectWait: (sec: number, n: number) =>
+			`Retrying in ${sec} seconds... (Attempt ${n}/5)`,
+		logReconnectNow: "Reconnecting...",
+		logMaxRetries: "Connection failed. Maximum attempts reached.",
+		logPossibleReasons: "Possible reasons:",
+		logReasonInternet: "Your internet may be disconnected",
+		logReasonFirewall: "Firewall/Antivirus may be blocking Bypax",
+		logReasonPorts: "Ports 8080-8084 may be in use",
+		logSolutions: "Suggested solutions:",
+		logSolInternet: "Check your internet connection",
+		logSolFirewall: "Check your firewall settings",
+		logSolAdmin: "Run the application as administrator",
+		logSolLogs: "Copy and share logs for support",
+		logLanRestart: "LAN sharing changed, restarting connection...",
+		logDpiRestart: "DPI mode changed, restarting connection...",
+		logEngineStoppedGrace: "Bypax engine stopped.",
+		logServiceStopped: "Service stopped.",
+		logShutdownStarting: "Shutdown started...",
+		logProcessStopped: "Process stopped.",
+		logSpoofReady: (port: number) =>
+			`✓ SpoofDPI engine started (Port: ${port})`,
+		logPacStarted: "✓ PAC server started (for LAN devices)",
+		logPacStartError: (err: unknown) => `PAC server failed to start: ${err}`,
+		logEngineActive: "✓ Bypax engine active",
+		logPortBusy: (port: number) =>
+			`⚠ Port ${port} is busy, trying another one...`,
+		logInitializing: "⏳ Engine is initializing...",
+		logPortRetryOpen: (port: number) =>
+			`Port ${port} could not be opened, retrying...`,
+		logProxyClearError: (err: unknown) => `Failed to clear proxy: ${err}`,
+		logProxySetError: (err: unknown) => `Failed to set proxy: ${err}`,
+		logServiceStopError: (err: unknown) => `Failed to stop service: ${err}`,
+		logConfigError: (err: unknown) => `Configuration error: ${err}`,
+		logAdminMissing: "Admin permission missing! App may not work correctly.",
+		logInternetBack: "Internet connection restored.",
+		logInternetLost: "Internet connection lost!",
+		logPortRetry: (count: number) =>
+			`Port conflict, trying new port... (${count}/20)`,
+		logNoPort: "No available port found.",
+		logWinHttpEnabled: "Game Mode (WinHTTP) proxy tunnel applied.",
+		logWpcapMissing:
+			"SpoofDPI could not find wpcap.dll. Please install Npcap or WinPcap, then restart the application.",
+		logAntivirusWarning:
+			"Windows Defender or your antivirus software may have blocked 'bypax-proxy.exe'. Please add the file to your antivirus exclusion list.",
+		logFailsafePortClosed: "Unexpected error: Proxy could not start",
+		logDirtyShutdownRecovery:
+			"⚠️ Previous session did not close cleanly — proxy settings cleared",
 
-    // ===== SETTINGS.JSX =====
-    settingsTitle: "SETTINGS",
+		// ===== SETTINGS.JSX =====
+		settingsTitle: "SETTINGS",
 
-    // Section: Connection Method
-    sectionMethod: "CONNECTION METHOD",
-    sectionMethodWhy:
-      "One setting for all ISPs. Use on all devices via LAN. Proxy-based so no ping/jitter in games.",
-    methodStrong: "Strong Mode",
-    methodStrongDesc: "Strongest bypass for tough ISPs (adds latency)",
-    methodTurbo: "Turbo Mode",
-    methodTurboDesc: "Lowest latency, for light DPI",
-    methodBalanced: "Balanced Mode (Recommended)",
-    methodBalancedDesc: "Fast + strong bypass, works on most ISPs",
+		// Section: Connection Method
+		sectionMethod: "CONNECTION METHOD",
+		sectionMethodWhy:
+			"One setting for all ISPs. Use on all devices via LAN. Proxy-based so no ping/jitter in games.",
+		methodStrong: "Strong Mode",
+		methodStrongDesc: "Strongest bypass for tough ISPs (adds latency)",
+		methodTurbo: "Turbo Mode",
+		methodTurboDesc: "Lowest latency, for light DPI",
+		methodBalanced: "Balanced Mode (Recommended)",
+		methodBalancedDesc: "Fast + strong bypass, works on most ISPs",
 
-    // Section: Advanced (Strong mode)
-    sectionAdvanced: "ADVANCED",
-    chunkSizeLabel: "Chunk size",
-    chunkSizeDesc:
-      "Controls how many pieces HTTPS traffic is split into. Depending on your ISP, 4 or 16 may be faster; 8 is usually balanced (default). Try and pick what works best.",
-    chunkSize4: "4 — Strongest (some ISPs)",
-    chunkSize8: "8 — Balanced (default)",
-    chunkSize16: "16 — Faster (some ISPs)",
+		// Section: Advanced (Strong mode)
+		sectionAdvanced: "ADVANCED",
+		chunkSizeLabel: "Chunk size",
+		chunkSizeDesc:
+			"Controls how many pieces HTTPS traffic is split into. Depending on your ISP, 4 or 16 may be faster; 8 is usually balanced (default). Try and pick what works best.",
+		chunkSize4: "4 — Strongest (some ISPs)",
+		chunkSize8: "8 — Balanced (default)",
+		chunkSize16: "16 — Faster (some ISPs)",
 
-    // Section: Network
-    sectionNetwork: "NETWORK",
-    lanSharing: "LAN Sharing",
-    lanSharingDesc: "Allow connections from other devices (Phone, Console)",
+		// Section: Network
+		sectionNetwork: "NETWORK",
+		lanSharing: "LAN Sharing",
+		lanSharingDesc: "Allow connections from other devices (Phone, Console)",
 
-    // Section: Automation
-    sectionAutomation: "AUTOMATION",
-    autoConnect: "Auto Connect",
-    autoConnectDesc: "Connect as soon as the app opens",
-    autoReconnect: "Auto Reconnect",
-    autoReconnectDesc: "Automatically retry if connection drops",
+		// Section: Automation
+		sectionAutomation: "AUTOMATION",
+		autoConnect: "Auto Connect",
+		autoConnectDesc: "Connect as soon as the app opens",
+		autoReconnect: "Auto Reconnect",
+		autoReconnectDesc: "Automatically retry if connection drops",
 
-    // Section: General
-    sectionGeneral: "GENERAL",
-    autoStart: "Start at Boot",
-    autoStartDesc: "Launch Bypax when Windows starts",
-    minimizeToTray: "Minimize to Tray",
-    minimizeToTrayDesc: "Run in background when closed",
-    alwaysOnTop: "Always on Top",
-    alwaysOnTopDesc: "Window stays above all other windows",
-    requireConfirmation: "Action Confirmation",
-    requireConfirmationDesc: "Ask before disconnecting or exiting",
-    language: "LANGUAGE",
-    languageDesc: "Change interface language",
+		// Section: General
+		sectionGeneral: "GENERAL",
+		autoStart: "Start at Boot",
+		autoStartDesc: "Launch Bypax when Windows starts",
+		minimizeToTray: "Minimize to Tray",
+		minimizeToTrayDesc: "Run in background when closed",
+		alwaysOnTop: "Always on Top",
+		alwaysOnTopDesc: "Window stays above all other windows",
+		requireConfirmation: "Action Confirmation",
+		requireConfirmationDesc: "Ask before disconnecting or exiting",
+		language: "LANGUAGE",
+		languageDesc: "Change interface language",
 
-    // Section: Notifications
-    sectionNotifications: "NOTIFICATIONS",
-    notifications: "Desktop Notifications",
-    notificationsDesc: "Master notification switch (Enable/Disable All)",
-    notifyOnConnect: "On Connection Established",
-    notifyOnConnectDesc: "Notify when connection is successfully secured",
-    notifyOnDisconnect: "On Connection Dropped",
-    notifyOnDisconnectDesc: "Notify on unexpected drops or repairs",
-    notifDisconnectManual: "Connection successfully terminated.",
+		// Section: Notifications
+		sectionNotifications: "NOTIFICATIONS",
+		notifications: "Desktop Notifications",
+		notificationsDesc: "Master notification switch (Enable/Disable All)",
+		notifyOnConnect: "On Connection Established",
+		notifyOnConnectDesc: "Notify when connection is successfully secured",
+		notifyOnDisconnect: "On Connection Dropped",
+		notifyOnDisconnectDesc: "Notify on unexpected drops or repairs",
+		notifDisconnectManual: "Connection successfully terminated.",
 
-    // Section: DNS
-    sectionDns: "DNS LIST",
-    dnsAutoSelect: "Auto Select (Recommended)",
-    dnsAutoSelectDesc: "Automatically finds the fastest server",
-    dnsSystemDefault: "System Default",
-    dnsSystemDefaultDesc: "SpoofDPI Default DNS",
-    dnsCfDesc: "Fast & Private",
-    dnsAdguardDesc: "Ad Blocker",
-    dnsGoogleDesc: "Reliable",
-    dnsQuad9Desc: "Security Focused",
-    dnsOpenDnsDesc: "Powered by Cisco",
-    dnsCheckSpeed: "DNS Ping Test",
-    dnsChecking: "Measuring...",
+		// Section: DNS
+		sectionDns: "DNS LIST",
+		dnsAutoSelect: "Auto Select (Recommended)",
+		dnsAutoSelectDesc: "Automatically finds the fastest server",
+		dnsSystemDefault: "System Default",
+		dnsSystemDefaultDesc: "SpoofDPI Default DNS",
+		dnsCfDesc: "Fast & Private",
+		dnsAdguardDesc: "Ad Blocker",
+		dnsGoogleDesc: "Reliable",
+		dnsQuad9Desc: "Security Focused",
+		dnsOpenDnsDesc: "Powered by Cisco",
+		dnsCheckSpeed: "DNS Ping Test",
+		dnsChecking: "Measuring...",
 
-    // Section: Driver
-    driverStatusInstalled: "Advanced Filtering Active",
-    driverStatusMissing: "Unlock advanced features if bypass fails",
-    driverInstallBtn: "INSTALL DRIVER (RECOMMENDED)",
-    driverIspWarning:
-      "If you have connection issues, you can unlock much more advanced DPI bypass features by installing the driver.",
+		// Section: Driver
+		driverStatusInstalled: "Advanced Filtering Active",
+		driverStatusMissing: "Unlock advanced features if bypass fails",
+		driverInstallBtn: "INSTALL DRIVER (RECOMMENDED)",
+		driverIspWarning:
+			"If you have connection issues, you can unlock much more advanced DPI bypass features by installing the driver.",
 
-    // ISS Overlay (First Run)
-    issOverlayTitle: "Select Your Internet Provider",
-    issOverlayDesc: "Let us auto-apply the best settings for your ISP.",
-    issOverlayApply: "APPLY & CONNECT",
-    issOverlaySkip: "Skip",
-    issProfileActive: "Profile Active",
-    issProfileSee: "See recommended settings",
-    issApplyBtn: "Auto Apply Settings",
-    issAppliedMsg: "This setting is currently in use",
+		// ISS Overlay (First Run)
+		issOverlayTitle: "Select Your Internet Provider",
+		issOverlayDesc: "Let us auto-apply the best settings for your ISP.",
+		issOverlayApply: "APPLY & CONNECT",
+		issOverlaySkip: "Skip",
+		issProfileActive: "Profile Active",
+		issProfileSee: "See recommended settings",
+		issApplyBtn: "Auto Apply Settings",
+		issAppliedMsg: "This setting is currently in use",
 
-    // ISS Guide (Settings)
-    issGuideTitle: "ISP GUIDE",
-    issLightName: "TurkNet",
-    issLightDesc:
-      "Light filtering. Turbo Mode ensures no ping increase or speed loss in games.",
-    issMidName: "Only Some ISS",
-    issMidDesc:
-      "Standard blocking. Strong Mode splits packets for reliable access.",
-    issHeavyName:
-      "Türk Telekom / Vodafone / Kablonet / Superonline / Milenicom",
-    issHeavyDesc:
-      "Advanced DPI devices. Strong Mode may send fake packets to bypass them.",
-    issOtherName: "Other / Not Sure",
-    issOtherDesc:
-      "Starts with Strong Mode. Works reliably with most providers, switch to Turbo if needed.",
+		// ISS Guide (Settings)
+		issGuideTitle: "ISP GUIDE",
+		issLightName: "TurkNet",
+		issLightDesc:
+			"Light filtering. Turbo Mode ensures no ping increase or speed loss in games.",
+		issMidName: "Only Some ISS",
+		issMidDesc:
+			"Standard blocking. Strong Mode splits packets for reliable access.",
+		issHeavyName:
+			"Türk Telekom / Vodafone / Kablonet / Superonline / Milenicom",
+		issHeavyDesc:
+			"Advanced DPI devices. Strong Mode may send fake packets to bypass them.",
+		issOtherName: "Other / Not Sure",
+		issOtherDesc:
+			"Starts with Strong Mode. Works reliably with most providers, switch to Turbo if needed.",
 
-    // Bypass Settings
-    sectionBypass: "BYPASS SETTINGS",
-    modeTurboName: "Turbo Mode",
-    modeTurboDesc: "Lowest latency. Bypasses light filters instantly.",
-    modeBalancedName: "Balanced Mode",
-    modeBalancedDesc: "Fast and stable. Bypasses standard filters.",
-    modeStrongName: "Strong Mode",
-    modeStrongDesc: "Bypasses tough DPI with fake packets.",
+		// Bypass Settings
+		sectionBypass: "BYPASS SETTINGS",
+		modeTurboName: "Turbo Mode",
+		modeTurboDesc: "Lowest latency. Bypasses light filters instantly.",
+		modeBalancedName: "Balanced Mode",
+		modeBalancedDesc: "Fast and stable. Bypasses standard filters.",
+		modeStrongName: "Strong Mode",
+		modeStrongDesc: "Bypasses tough DPI with fake packets.",
 
-    // Extra Network
-    sectionExtraNetwork: "EXTRA NETWORK SETTINGS",
-    ipv4ForceTitle: "Force IPv4 (Recommended)",
-    ipv4ForceDesc: "Prevents infinite loading and timeout errors.",
-    winHttpForceTitle: "Game Mode (WinHTTP Proxy)",
-    winHttpForceDesc:
-      "Forces C++ desktop games and background services to bypass DPI through the proxy.",
+		// Extra Network
+		sectionExtraNetwork: "EXTRA NETWORK SETTINGS",
+		ipv4ForceTitle: "Force IPv4 (Recommended)",
+		ipv4ForceDesc: "Prevents infinite loading and timeout errors.",
+		winHttpForceTitle: "Game Mode (WinHTTP Proxy)",
+		winHttpForceDesc:
+			"Forces C++ desktop games and background services to bypass DPI through the proxy.",
 
-    // Advanced (Npcap)
-    sectionAdvancedNpcap: "ADVANCED SETTINGS",
-    advancedNpcapDesc:
-      "ISPs with heavy DPI measures (Kablonet, Superonline etc.) require advanced packet manipulation.",
-    advancedNpcapInstalled: "Npcap Installed — Advanced features active",
-    advancedNpcapMissing: "Npcap not installed — Strong mode limited",
-    advancedNpcapInstallBtn: "INSTALL NPCAP DRIVER",
-    advancedNpcapWhy:
-      "Npcap provides low-level access to network packets. This enables advanced DPI bypass techniques like fake packet injection.",
-    advancedFeaturesToggle: "Advanced Bypass",
-    advancedFeaturesToggleDesc:
-      "Enables fake packet injection and advanced DPI bypass techniques.",
-    npcapRestartWarning: "You need to restart your computer for Npcap to work.",
-    logStrongFake: "🚀 Strong Mode: Fake Packet (3) active.",
-    logStrongNoDriver: "⚠️ Strong Mode: No driver, Chunk-1 only.",
-    logStrongChunkOnly: "🛡️ Strong Mode: Chunk-1 active.",
-    logNpcapFallback:
-      "⚠️ Npcap driver not responding. Disabling advanced bypass and retrying...",
-    advancedNpcapHint: "Install Npcap driver for stronger bypass",
+		// Advanced (Npcap)
+		sectionAdvancedNpcap: "ADVANCED SETTINGS",
+		advancedNpcapDesc:
+			"ISPs with heavy DPI measures (Kablonet, Superonline etc.) require advanced packet manipulation.",
+		advancedNpcapInstalled: "Npcap Installed — Advanced features active",
+		advancedNpcapMissing: "Npcap not installed — Strong mode limited",
+		advancedNpcapInstallBtn: "INSTALL NPCAP DRIVER",
+		advancedNpcapWhy:
+			"Npcap provides low-level access to network packets. This enables advanced DPI bypass techniques like fake packet injection.",
+		advancedFeaturesToggle: "Advanced Bypass",
+		advancedFeaturesToggleDesc:
+			"Enables fake packet injection and advanced DPI bypass techniques.",
+		npcapRestartWarning: "You need to restart your computer for Npcap to work.",
+		logStrongFake: "🚀 Strong Mode: Fake Packet (3) active.",
+		logStrongNoDriver: "⚠️ Strong Mode: No driver, Chunk-1 only.",
+		logStrongChunkOnly: "🛡️ Strong Mode: Chunk-1 active.",
+		logNpcapFallback:
+			"⚠️ Npcap driver not responding. Disabling advanced bypass and retrying...",
+		advancedNpcapHint: "Install Npcap driver for stronger bypass",
 
-    // Section: Troubleshooting
-    sectionTroubleshoot: "TROUBLESHOOTING",
-    fixInternet: "Fix Internet Connection",
-    fixInternetDesc: "Fixes internet if proxy gets stuck.",
-    fixRepairing: "Repairing...",
-    fixRepairingDesc: "Resetting system settings, please wait.",
-    fixDone: "Repaired!",
-    fixDoneDesc: "Proxy settings cleared, internet restored.",
-    fixError: "Error Occurred!",
-    fixErrorDesc: "Something went wrong during the process.",
+		// Section: Troubleshooting
+		sectionTroubleshoot: "TROUBLESHOOTING",
+		fixInternet: "Fix Internet Connection",
+		fixInternetDesc: "Fixes internet if proxy gets stuck.",
+		fixRepairing: "Repairing...",
+		fixRepairingDesc: "Resetting system settings, please wait.",
+		fixDone: "Repaired!",
+		fixDoneDesc: "Proxy settings cleared, internet restored.",
+		fixError: "Error Occurred!",
+		fixErrorDesc: "Something went wrong during the process.",
 
-    // Section: Developer
-    sectionDev: "DEVELOPER",
-    devRole: "BypaxDPI Developer",
-    devSubscribe: "Subscribe",
-    devSupport: "Support",
+		// Section: Developer
+		sectionDev: "DEVELOPER",
+		devRole: "BypaxDPI Developer",
+		devSubscribe: "Subscribe",
+		devSupport: "Support",
 
-    // Section: Important Notice
-    sectionNotice: "IMPORTANT",
-    noticeTitle: "Security & False Positives",
-    noticeDesc:
-      'The Bypax engine may sometimes be flagged as a "false positive" by AI-based systems like Windows Defender. This is completely harmless. Also, antivirus software like Kaspersky or ESET may block connections with their HTTPS scanning. If you experience issues, check those settings.',
+		// Section: Important Notice
+		sectionNotice: "IMPORTANT",
+		noticeTitle: "Security & False Positives",
+		noticeDesc:
+			'The Bypax engine may sometimes be flagged as a "false positive" by AI-based systems like Windows Defender. This is completely harmless. Also, antivirus software like Kaspersky or ESET may block connections with their HTTPS scanning. If you experience issues, check those settings.',
 
-    // Dialogs
-    confirmExitTitle: "Exit",
-    confirmExitDesc: "Are you sure you want to stop the Bypax engine and exit?",
-    confirmDisconnectTitle: "Disconnect",
-    confirmDisconnectDesc:
-      "Are you sure you want to terminate your secure connection?",
-    btnNo: "Cancel",
-    btnYes: "Confirm",
+		// Dialogs
+		confirmExitTitle: "Exit",
+		confirmExitDesc: "Are you sure you want to stop the Bypax engine and exit?",
+		confirmDisconnectTitle: "Disconnect",
+		confirmDisconnectDesc:
+			"Are you sure you want to terminate your secure connection?",
+		btnNo: "Cancel",
+		btnYes: "Confirm",
 
-    // Settings Tabs
-    tabGeneral: "GENERAL",
-    tabNetwork: "NETWORK",
-    tabNotification: "ALERTS",
-    tabSystem: "SYSTEM",
-  },
+		// Settings Tabs
+		tabGeneral: "GENERAL",
+		tabNetwork: "NETWORK",
+		tabNotification: "ALERTS",
+		tabSystem: "SYSTEM",
+	},
 };
 
 /**
@@ -664,16 +664,16 @@ export type TranslationKey = keyof Translations;
 
 /** Resolve the active translation table, falling back to Turkish. */
 export const getTranslations = (lang: Language = "tr"): Translations => {
-  return translations[lang] ?? translations.tr;
+	return translations[lang] ?? translations.tr;
 };
 
 export const SUPPORTED_LANGUAGES: ReadonlyArray<{
-  readonly code: Language;
-  readonly name: string;
-  readonly flag: string;
+	readonly code: Language;
+	readonly name: string;
+	readonly flag: string;
 }> = [
-  { code: "tr", name: "Türkçe", flag: "🇹🇷" },
-  { code: "en", name: "English", flag: "🇬🇧" },
+	{ code: "tr", name: "Türkçe", flag: "🇹🇷" },
+	{ code: "en", name: "English", flag: "🇬🇧" },
 ];
 
 export default translations;

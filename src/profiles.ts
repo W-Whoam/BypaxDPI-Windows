@@ -8,10 +8,10 @@
 // ═══════════════════════════════════════════════════════════════════
 
 import type {
-  BypassMode,
-  ChunkSizeOption,
-  DpiMethod,
-  IspProfile,
+	BypassMode,
+	ChunkSizeOption,
+	DpiMethod,
+	IspProfile,
 } from "./types";
 
 // ─── ISS PROFİLLERİ ──────────────────────────────────────────────
@@ -34,52 +34,52 @@ import turkTelekomLogo from "./assets/iss-icons/turktelekom.png";
 import vodafoneLogo from "./assets/iss-icons/vodafone.png";
 
 export const ISP_PROFILES: readonly IspProfile[] = [
-  {
-    id: "light",
-    mode: "0",
-    chunk: 4,
-    color: "#facc15",
-    bg: "rgba(250, 204, 21, 0.1)",
-    icon: "⚡",
-    logos: [turknetLogo],
-    // i18n key'leri: issLightName, issLightDesc
-  },
-  {
-    id: "mid",
-    mode: "1",
-    chunk: 2,
-    color: "#60a5fa",
-    bg: "rgba(96, 165, 250, 0.1)",
-    icon: "🛡️",
-    logos: [],
-    // i18n key'leri: issMidName, issMidDesc
-  },
-  {
-    id: "heavy",
-    mode: "2",
-    chunk: 1,
-    color: "#60a5fa",
-    bg: "rgba(96, 165, 250, 0.1)",
-    icon: "🔒",
-    logos: [
-      kablonetLogo,
-      superonlineLogo,
-      turkTelekomLogo,
-      vodafoneLogo,
-      milenicomLogo,
-    ],
-    // i18n key'leri: issHeavyName, issHeavyDesc
-  },
-  {
-    id: "other",
-    mode: "2",
-    chunk: 1,
-    color: "#a78bfa",
-    bg: "rgba(167, 139, 250, 0.1)",
-    icon: "🌐",
-    logos: [],
-    // i18n key'leri: issOtherName, issOtherDesc
-  },
+	{
+		id: "light",
+		mode: "0",
+		chunk: 4,
+		color: "#facc15",
+		bg: "rgba(250, 204, 21, 0.1)",
+		icon: "⚡",
+		logos: [turknetLogo],
+		// i18n key'leri: issLightName, issLightDesc
+	},
+	{
+		id: "mid",
+		mode: "1",
+		chunk: 2,
+		color: "#60a5fa",
+		bg: "rgba(96, 165, 250, 0.1)",
+		icon: "🛡️",
+		logos: [],
+		// i18n key'leri: issMidName, issMidDesc
+	},
+	{
+		id: "heavy",
+		mode: "2",
+		chunk: 1,
+		color: "#60a5fa",
+		bg: "rgba(96, 165, 250, 0.1)",
+		icon: "🔒",
+		logos: [
+			kablonetLogo,
+			superonlineLogo,
+			turkTelekomLogo,
+			vodafoneLogo,
+			milenicomLogo,
+		],
+		// i18n key'leri: issHeavyName, issHeavyDesc
+	},
+	{
+		id: "other",
+		mode: "2",
+		chunk: 1,
+		color: "#a78bfa",
+		bg: "rgba(167, 139, 250, 0.1)",
+		icon: "🌐",
+		logos: [],
+		// i18n key'leri: issOtherName, issOtherDesc
+	},
 ];
 
 // ─── BYPASS MODLARI ──────────────────────────────────────────────
@@ -96,39 +96,39 @@ export const ISP_PROFILES: readonly IspProfile[] = [
 // ─────────────────────────────────────────────────────────────────
 
 export const BYPASS_MODES: readonly BypassMode[] = [
-  {
-    id: "0",
-    color: "#facc15",
-    activeBg: "rgba(234, 179, 8, 0.1)",
-    iconBg: "rgba(234, 179, 8, 0.2)",
-    iconClass: "yellow",
-    iconName: "Activity",
-    hasChunkSize: false,
-    hasNpcap: false,
-    // i18n key'leri: modeTurboName, modeTurboDesc
-  },
-  {
-    id: "1",
-    color: "#4ade80",
-    activeBg: "rgba(34, 197, 94, 0.1)",
-    iconBg: "rgba(34, 197, 94, 0.2)",
-    iconClass: "green",
-    iconName: "Zap",
-    hasChunkSize: true,
-    hasNpcap: false,
-    // i18n key'leri: modeBalancedName, modeBalancedDesc
-  },
-  {
-    id: "2",
-    color: "#60a5fa",
-    activeBg: "rgba(59, 130, 246, 0.1)",
-    iconBg: "rgba(59, 130, 246, 0.2)",
-    iconClass: "blue",
-    iconName: "Shield",
-    hasChunkSize: true,
-    hasNpcap: true,
-    // i18n key'leri: modeStrongName, modeStrongDesc
-  },
+	{
+		id: "0",
+		color: "#facc15",
+		activeBg: "rgba(234, 179, 8, 0.1)",
+		iconBg: "rgba(234, 179, 8, 0.2)",
+		iconClass: "yellow",
+		iconName: "Activity",
+		hasChunkSize: false,
+		hasNpcap: false,
+		// i18n key'leri: modeTurboName, modeTurboDesc
+	},
+	{
+		id: "1",
+		color: "#4ade80",
+		activeBg: "rgba(34, 197, 94, 0.1)",
+		iconBg: "rgba(34, 197, 94, 0.2)",
+		iconClass: "green",
+		iconName: "Zap",
+		hasChunkSize: true,
+		hasNpcap: false,
+		// i18n key'leri: modeBalancedName, modeBalancedDesc
+	},
+	{
+		id: "2",
+		color: "#60a5fa",
+		activeBg: "rgba(59, 130, 246, 0.1)",
+		iconBg: "rgba(59, 130, 246, 0.2)",
+		iconClass: "blue",
+		iconName: "Shield",
+		hasChunkSize: true,
+		hasNpcap: true,
+		// i18n key'leri: modeStrongName, modeStrongDesc
+	},
 ];
 
 // ─── CHUNK SIZE SEÇENEKLERİ ─────────────────────────────────────
@@ -137,10 +137,10 @@ export const BYPASS_MODES: readonly BypassMode[] = [
 // ─────────────────────────────────────────────────────────────────
 
 export const CHUNK_SIZES: readonly ChunkSizeOption[] = [
-  { value: 1, label: "1" },
-  { value: 2, label: "2" },
-  { value: 4, label: "4" },
-  { value: 8, label: "8" },
+	{ value: 1, label: "1" },
+	{ value: 2, label: "2" },
+	{ value: 4, label: "4" },
+	{ value: 8, label: "8" },
 ];
 
 // ─── VARSAYILAN CHUNK DEĞERLERİ ─────────────────────────────────
@@ -148,9 +148,9 @@ export const CHUNK_SIZES: readonly ChunkSizeOption[] = [
 // ─────────────────────────────────────────────────────────────────
 
 export const DEFAULT_CHUNKS = {
-  "0": 4, // Turbo: chunk kullanmaz ama fallback
-  "1": 2, // Dengeli: 2 byte chunk
-  "2": 1, // Güçlü: 1 byte chunk
+	"0": 4, // Turbo: chunk kullanmaz ama fallback
+	"1": 2, // Dengeli: 2 byte chunk
+	"2": 1, // Güçlü: 1 byte chunk
 } satisfies Record<DpiMethod, number>;
 
 // ─── GEÇERLİ CHUNK DEĞERLERİ ────────────────────────────────────
@@ -158,7 +158,7 @@ export const DEFAULT_CHUNKS = {
 // ─────────────────────────────────────────────────────────────────
 
 export const VALID_CHUNK_SIZES: readonly number[] = [
-  1, 2, 4, 8, 16, 32, 64, 128,
+	1, 2, 4, 8, 16, 32, 64, 128,
 ];
 
 // ─── GEÇERLİ DPI MODLARI ────────────────────────────────────────

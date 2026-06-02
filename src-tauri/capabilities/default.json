@@ -1,66 +1,64 @@
 {
-  "identifier": "default",
-  "windows": [
-    "main"
-  ],
-  "permissions": [
-    "core:default",
-    
-    "autostart:allow-enable",
-    "autostart:allow-disable",
-    "autostart:allow-is-enabled",
+	"identifier": "default",
+	"windows": ["main"],
+	"permissions": [
+		"core:default",
 
-    "core:window:allow-close",
-    "core:window:allow-hide",
-    "core:window:allow-show",
-    "core:window:allow-set-focus",
-    "core:window:allow-set-always-on-top",
-    "core:window:allow-unminimize",
-    "core:window:allow-destroy",
+		"autostart:allow-enable",
+		"autostart:allow-disable",
+		"autostart:allow-is-enabled",
 
-    {
-      "identifier": "shell:allow-spawn",
-      "allow": [
-        {
-          "name": "binaries/bypax-proxy",
-          "sidecar": true,
-          "args": true
-        }
-      ]
-    },
+		"core:window:allow-close",
+		"core:window:allow-hide",
+		"core:window:allow-show",
+		"core:window:allow-set-focus",
+		"core:window:allow-set-always-on-top",
+		"core:window:allow-unminimize",
+		"core:window:allow-destroy",
 
-    {
-      "identifier": "shell:allow-kill",
-      "allow": [
-        {
-          "name": "binaries/bypax-proxy",
-          "sidecar": true,
-          "args": true
-        }
-      ]
-    },
+		{
+			"identifier": "shell:allow-spawn",
+			"allow": [
+				{
+					"name": "binaries/bypax-proxy",
+					"sidecar": true,
+					"args": true
+				}
+			]
+		},
 
-    "shell:allow-stdin-write",
+		{
+			"identifier": "shell:allow-kill",
+			"allow": [
+				{
+					"name": "binaries/bypax-proxy",
+					"sidecar": true,
+					"args": true
+				}
+			]
+		},
 
-    "clipboard-manager:allow-write-text",
+		"shell:allow-stdin-write",
 
-    "notification:allow-notify",
-    "notification:allow-request-permission",
-    "notification:allow-is-permission-granted",
+		"clipboard-manager:allow-write-text",
 
-    "dialog:allow-message",
-    "dialog:allow-ask",
+		"notification:allow-notify",
+		"notification:allow-request-permission",
+		"notification:allow-is-permission-granted",
 
-    "process:allow-exit",
-    
-    {
-      "identifier": "opener:allow-open-url",
-      "allow": [
-        { "url": "https://www.patreon.com/**" },
-        { "url": "https://bypaxdpi.vercel.app/**" },
-        { "url": "https://github.com/ConsolAktif/**" },
-        { "url": "https://youtube.com/**" }
-      ]
-    }
-  ]
+		"dialog:allow-message",
+		"dialog:allow-ask",
+
+		"process:allow-exit",
+
+		{
+			"identifier": "opener:allow-open-url",
+			"allow": [
+				{ "url": "https://www.patreon.com/**" },
+				{ "url": "https://bypaxdpi.vercel.app/**" },
+				{ "url": "https://github.com/ConsolAktif/**" },
+				{ "url": "https://youtube.com/**" }
+			]
+		}
+	]
 }
