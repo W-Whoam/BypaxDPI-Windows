@@ -1,3 +1,5 @@
+import type { Language } from "./types";
+
 const translations = {
   "tr": {
     // ===== APP.JSX - Header =====
@@ -90,7 +92,7 @@ const translations = {
     logProxyCleared: "Sistem Proxy Temizlendi",
     logEngineStopped: (code: number) =>
       `Bypax motoru beklenmedik şekilde durduruldu (Kod: ${code})`,
-    logEngineStartError: (err: Error) => `Motor başlatılamadı: ${err}`,
+    logEngineStartError: (err: unknown) => `Motor başlatılamadı: ${err}`,
     logAutoReconnect: "Otomatik yeniden bağlanma aktif...",
     logReconnecting: (n: number) => `Yeniden bağlanılıyor... (Deneme ${n}/5)`,
     logReconnectWait: (sec: number, n: number) =>
@@ -116,17 +118,17 @@ const translations = {
     logSpoofReady: (port: number) =>
       `✓ SpoofDPI Motoru başlatıldı (Port: ${port})`,
     logPacStarted: "✓ PAC sunucusu başlatıldı (Yerel ağ cihazları için)",
-    logPacStartError: (err: number) => `PAC sunucusu başlatılamadı: ${err}`,
+    logPacStartError: (err: unknown) => `PAC sunucusu başlatılamadı: ${err}`,
     logEngineActive: "✓ Bypax motoru aktif",
     logPortBusy: (port: number) =>
       `⚠ Port ${port} dolu, başka port deneniyor...`,
     logInitializing: "⏳ Motor başlatılıyor...",
     logPortRetryOpen: (port: number) =>
       `Port ${port} açılamadı, yeniden deneniyor...`,
-    logProxyClearError: (err: Error) => `Proxy temizleme hatası: ${err}`,
-    logProxySetError: (err: Error) => `Proxy ayarlanamadı: ${err}`,
-    logServiceStopError: (err: Error) => `Servis durdurma hatası: ${err}`,
-    logConfigError: (err: Error) => `Yapılandırma hatası: ${err}`,
+    logProxyClearError: (err: unknown) => `Proxy temizleme hatası: ${err}`,
+    logProxySetError: (err: unknown) => `Proxy ayarlanamadı: ${err}`,
+    logServiceStopError: (err: unknown) => `Servis durdurma hatası: ${err}`,
+    logConfigError: (err: unknown) => `Yapılandırma hatası: ${err}`,
     logAdminMissing: "Yönetici izni eksik! Uygulama düzgün çalışmayabilir.",
     logInternetBack: "İnternet bağlantısı tekrar sağlandı.",
     logInternetLost: "İnternet bağlantısı kesildi!",
@@ -412,7 +414,7 @@ const translations = {
     logProxyCleared: "System Proxy Cleared",
     logEngineStopped: (code: number) =>
       `Bypax engine stopped unexpectedly (Code: ${code})`,
-    logEngineStartError: (err: Error) => `Engine failed to start: ${err}`,
+    logEngineStartError: (err: unknown) => `Engine failed to start: ${err}`,
     logAutoReconnect: "Auto-reconnect enabled...",
     logReconnecting: (n: number) => `Reconnecting... (Attempt ${n}/5)`,
     logReconnectWait: (sec: number, n: number) =>
@@ -437,17 +439,17 @@ const translations = {
     logSpoofReady: (port: number) =>
       `✓ SpoofDPI engine started (Port: ${port})`,
     logPacStarted: "✓ PAC server started (for LAN devices)",
-    logPacStartError: (err: Error) => `PAC server failed to start: ${err}`,
+    logPacStartError: (err: unknown) => `PAC server failed to start: ${err}`,
     logEngineActive: "✓ Bypax engine active",
     logPortBusy: (port: number) =>
       `⚠ Port ${port} is busy, trying another one...`,
     logInitializing: "⏳ Engine is initializing...",
     logPortRetryOpen: (port: number) =>
       `Port ${port} could not be opened, retrying...`,
-    logProxyClearError: (err: Error) => `Failed to clear proxy: ${err}`,
-    logProxySetError: (err: Error) => `Failed to set proxy: ${err}`,
-    logServiceStopError: (err: Error) => `Failed to stop service: ${err}`,
-    logConfigError: (err: Error) => `Configuration error: ${err}`,
+    logProxyClearError: (err: unknown) => `Failed to clear proxy: ${err}`,
+    logProxySetError: (err: unknown) => `Failed to set proxy: ${err}`,
+    logServiceStopError: (err: unknown) => `Failed to stop service: ${err}`,
+    logConfigError: (err: unknown) => `Configuration error: ${err}`,
     logAdminMissing: "Admin permission missing! App may not work correctly.",
     logInternetBack: "Internet connection restored.",
     logInternetLost: "Internet connection lost!",
@@ -640,12 +642,26 @@ const translations = {
   },
 };
 
-// Aktif dili getiren hook/fonksiyon
-export const getTranslations = (lang: "tr" | "en" = "tr") => {
-  return translations[lang] || translations.tr;
+/**
+ * The full translation table for one language. Derived from the English entry,
+ * so `en` is the canonical key set: if `tr` ever drifts (a missing or extra
+ * key), the return of {@link getTranslations} below fails to type-check.
+ */
+export type Translations = (typeof translations)["en"];
+
+/** Every valid i18n key (used to type dynamic `t[key]` lookups). */
+export type TranslationKey = keyof Translations;
+
+/** Resolve the active translation table, falling back to Turkish. */
+export const getTranslations = (lang: Language = "tr"): Translations => {
+  return translations[lang] ?? translations.tr;
 };
 
-export const SUPPORTED_LANGUAGES = [
+export const SUPPORTED_LANGUAGES: ReadonlyArray<{
+  readonly code: Language;
+  readonly name: string;
+  readonly flag: string;
+}> = [
   { code: "tr", name: "Türkçe", flag: "🇹🇷" },
   { code: "en", name: "English", flag: "🇬🇧" },
 ];

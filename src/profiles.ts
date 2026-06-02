@@ -1,12 +1,18 @@
 // ═══════════════════════════════════════════════════════════════════
-// profiles.js — Tek Merkezi Yapılandırma Dosyası
+// profiles.ts — Tek Merkezi Yapılandırma Dosyası
 //
-// Tüm ISS profilleri, bypass modları, chunk seçenekleri ve
-// engine argümanları buradan yönetilir.
+// Tüm ISS profilleri, bypass modları ve chunk seçenekleri buradan yönetilir.
 //
 // Yeni ISS eklemek veya mevcut ayarları değiştirmek için
 // sadece bu dosyayı düzenlemeniz yeterlidir.
 // ═══════════════════════════════════════════════════════════════════
+
+import type {
+  BypassMode,
+  ChunkSizeOption,
+  DpiMethod,
+  IspProfile,
+} from "./types";
 
 // ─── ISS PROFİLLERİ ──────────────────────────────────────────────
 // İlk giriş overlay'ı ve Settings → ISS Rehberi'nde kullanılır.
@@ -27,7 +33,7 @@ import turknetLogo from "./assets/iss-icons/turknet.png";
 import turkTelekomLogo from "./assets/iss-icons/turktelekom.png";
 import vodafoneLogo from "./assets/iss-icons/vodafone.png";
 
-export const ISP_PROFILES = [
+export const ISP_PROFILES: readonly IspProfile[] = [
   {
     id: "light",
     mode: "0",
@@ -89,7 +95,7 @@ export const ISP_PROFILES = [
 //   hasNpcap      → Npcap gelişmiş bypass gösterilsin mi
 // ─────────────────────────────────────────────────────────────────
 
-export const BYPASS_MODES = [
+export const BYPASS_MODES: readonly BypassMode[] = [
   {
     id: "0",
     color: "#facc15",
@@ -130,7 +136,7 @@ export const BYPASS_MODES = [
 // Değer dizisi: her mod için gösterilecek chunk size'lar
 // ─────────────────────────────────────────────────────────────────
 
-export const CHUNK_SIZES = [
+export const CHUNK_SIZES: readonly ChunkSizeOption[] = [
   { value: 1, label: "1" },
   { value: 2, label: "2" },
   { value: 4, label: "4" },
@@ -145,25 +151,16 @@ export const DEFAULT_CHUNKS = {
   "0": 4, // Turbo: chunk kullanmaz ama fallback
   "1": 2, // Dengeli: 2 byte chunk
   "2": 1, // Güçlü: 1 byte chunk
-};
+} satisfies Record<DpiMethod, number>;
 
 // ─── GEÇERLİ CHUNK DEĞERLERİ ────────────────────────────────────
 // Config validasyonunda kullanılır
 // ─────────────────────────────────────────────────────────────────
 
-export const VALID_CHUNK_SIZES = [1, 2, 4, 8, 16, 32, 64, 128];
+export const VALID_CHUNK_SIZES: readonly number[] = [
+  1, 2, 4, 8, 16, 32, 64, 128,
+];
 
 // ─── GEÇERLİ DPI MODLARI ────────────────────────────────────────
 
-export const VALID_DPI_METHODS = ["0", "1", "2"];
-
-// ─── ENGINE ARGÜMAN OLUŞTURUCU ───────────────────────────────────
-// SpoofDPI sidecar'ına gönderilecek argümanları oluşturur.
-//
-// config   → Mevcut uygulama config'i
-// hasDriver → Npcap kurulu mu
-// dnsIP    → Seçili DNS IP adresi
-// dohUrl   → DoH URL (varsa)
-// addLog   → Log fonksiyonu
-// t        → Çeviri objesi
-// ─────────────────────────────────────────────────────────────────
+export const VALID_DPI_METHODS: readonly DpiMethod[] = ["0", "1", "2"];
