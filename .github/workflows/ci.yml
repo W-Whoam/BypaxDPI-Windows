@@ -1,0 +1,31 @@
+name: CI
+
+# Guards the type-based-project invariant: type-check + lint on every push/PR.
+# The full Tauri/Go bundle is intentionally out of scope here (it needs Windows
+# runners + Go + the SpoofDPI source); this is the fast frontend/tooling gate.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Type-check
+        run: bun run typecheck
+
+      - name: Lint + format check
+        run: bun run lint
