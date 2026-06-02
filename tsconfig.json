@@ -1,35 +1,13 @@
 {
-  "compilerOptions": {
-    // Environment setup & latest features
-    "lib": ["ESNext"],
-    "target": "ESNext",
-    "module": "Preserve",
-    "moduleDetection": "force",
-    "allowJs": false,
-
-    // Only add if using JSX (e.g. React, @elysiajs/html)
-    // "jsx": "react-jsx",
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true, // Drop if building a library
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    // Add bun-types here OR via @types/bun package, not both
-    "types": ["bun-types"],
-
-    // Best practices
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-
-    // Disabled by default — enable if you want stricter hygiene
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  },
-  "include": ["src/**/*", "scripts/**/*"]
+	// Solution-style root config. It owns no files itself — it only wires the two
+	// real environments together so `tsc --build` type-checks both:
+	//   - tsconfig.app.json  → the browser/React frontend (src/)
+	//   - tsconfig.node.json → Bun-run tooling (vite.config.ts, scripts/, change-icon.ts)
+	// These environments have incompatible globals (DOM vs Bun) and must NOT share
+	// one config. See ARCHITECTURE.md § Toolchain.
+	"files": [],
+	"references": [
+		{ "path": "./tsconfig.app.json" },
+		{ "path": "./tsconfig.node.json" }
+	]
 }

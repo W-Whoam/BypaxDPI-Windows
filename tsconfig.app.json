@@ -1,0 +1,40 @@
+{
+	// Frontend (browser) project: React 19 + Vite. Runs in a DOM environment, never
+	// in Bun, so it gets DOM libs + the React JSX runtime and explicitly NO Bun/Node
+	// globals (`"types": []` blocks @types/bun and @types/node from leaking in).
+	// Asset-import and import.meta.env types come from src/vite-env.d.ts.
+	"compilerOptions": {
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+		// Environment & language level
+		"target": "ESNext",
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"moduleDetection": "force",
+		"jsx": "react-jsx",
+		"useDefineForClassFields": true,
+
+		// Bundler mode (Vite/esbuild emit; tsc only type-checks)
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"noEmit": true,
+
+		// No ambient global type packages — frontend uses explicit imports only.
+		"types": [],
+
+		// Strictness
+		"strict": true,
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
+
+		// Unused-symbol hygiene is delegated to Biome (noUnusedImports / noUnusedVariables)
+		// to avoid duplicate diagnostics from two tools.
+		"noUnusedLocals": false,
+		"noUnusedParameters": false
+	},
+	"include": ["src"]
+}
