@@ -89,6 +89,18 @@ export type AppConfig = {
 	notifyOnDisconnect?: boolean;
 };
 
+/**
+ * Updater for {@link AppConfig}, shared by App (owner) and Settings (consumer).
+ * Either set one key, or merge a partial patch — both persist to localStorage.
+ */
+export type UpdateConfig = {
+	<K extends keyof AppConfig>(key: K, value: AppConfig[K]): void;
+	(patch: Partial<AppConfig>): void;
+};
+
+/** Measured DNS round-trip latencies (ms), keyed by resolver. `system` excluded. */
+export type DnsLatencies = Partial<Record<DnsKey, number>>;
+
 /** A selectable ISP preset (first-run overlay + settings guide). */
 export type IspProfile = {
 	readonly id: IspProfileId;
