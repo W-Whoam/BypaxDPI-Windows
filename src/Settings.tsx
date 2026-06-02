@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import { ipc } from "./ipc";
 import { disable, enable, isEnabled } from "@tauri-apps/plugin-autostart";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { Command } from "@tauri-apps/plugin-shell";
@@ -23,12 +24,23 @@ import {
 	Zap,
 } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { URLS } from "./constants";
 import { getTranslations, SUPPORTED_LANGUAGES } from "./i18n";
+import type { TranslationKey } from "./i18n";
 import { CHUNK_SIZES, DEFAULT_CHUNKS, ISP_PROFILES } from "./profiles";
+import type { AppConfig, DnsLatencies, DnsKey, IspProfileId, UpdateConfig } from "./types";
 import "./App.css";
 
-const Toggle = ({ checked, onChange }) => (
+export type SettingsProps = {
+	onBack: () => void;
+	config: AppConfig;
+	updateConfig: UpdateConfig;
+	dnsLatencies: DnsLatencies;
+	setDnsLatencies: Dispatch<SetStateAction<DnsLatencies>>;
+};
+
+const Toggle = ({ checked, onChange }: { checked: boolean; onChange: (next: boolean) => void }) => (
 	<div
 		className={`v2-toggle ${checked ? "active" : ""}`}
 		onClick={(e) => {
@@ -46,17 +58,17 @@ const Settings = ({
 	updateConfig,
 	dnsLatencies,
 	setDnsLatencies,
-}) => {
-	const [activeTab, setActiveTab] = useState("general");
-	const scrollRef = useRef(null);
+}: SettingsProps) => {
+	const [activeTab, setActiveTab] = useState<string>("general");
+	const scrollRef = useRef<HTMLDivElement | null>(null);
 
-	const [expandedISP, setExpandedISP] = useState(null);
+	const [expandedISP, setExpandedISP] = useState<IspProfileId | null>(null);
 	const [driverInstalled, setDriverInstalled] = useState(false);
 	const [needsRestart, setNeedsRestart] = useState(false);
 	const [showNpcapDetails, setShowNpcapDetails] = useState(false);
 
 	useEffect(() => {
-		invoke("check_driver").then(setDriverInstalled);
+		ipc.checkDriver().then(setDriverInstalled);
 	}, []);
 
 	useEffect(() => {
@@ -69,7 +81,8 @@ const Settings = ({
 	const setLatencies = setDnsLatencies || (() => {});
 	const [isChecking, setIsChecking] = useState(false);
 	const [autostartEnabled, setAutostartEnabled] = useState(false);
-	const [sortedProviders, setSortedProviders] = useState([]);
+	type DnsProvider = { id: DnsKey; name: string; desc: string; ip: string | null };
+	const [sortedProviders, setSortedProviders] = useState<DnsProvider[]>([]);
 	const [fixStatus, setFixStatus] = useState("idle");
 
 	const lang = config.language || "tr";
@@ -77,7 +90,7 @@ const Settings = ({
 
 	// DNS Providers with translations
 	// P2-FIX: Bellek sızıntısı önlendi - Her renderda tekrardan oluşmasını engelledik
-	const DNS_PROVIDERS = useMemo(
+	const DNS_PROVIDERS = useMemo<DnsProvider[]>(
 		() => [
 			{
 				id: "system",
@@ -135,7 +148,7 @@ const Settings = ({
 		}
 	};
 
-	const toggleAutostart = async (val) => {
+	const toggleAutostart = async (val: boolean) => {
 		try {
 			if (val) {
 				await enable();
@@ -151,22 +164,23 @@ const Settings = ({
 
 	const checkAllLatencies = async (forceSelectBest = false) => {
 		setIsChecking(true);
-		const newLatencies = {};
+		const newLatencies: DnsLatencies = {};
 
 		const pingableProviders = DNS_PROVIDERS.filter((p) => p.ip !== null);
 
+		// Network Information API is not in standard lib; cast to access it safely
+		const nav = navigator as Navigator & { connection?: { effectiveType?: string } };
 		const isSlowConnection =
-			navigator.connection?.effectiveType === "3g" ||
-			navigator.connection?.effectiveType === "2g";
+			nav.connection?.effectiveType === "3g" ||
+			nav.connection?.effectiveType === "2g";
 		const TIMEOUT_MS = isSlowConnection ? 3000 : 1500;
 
 		const results = await Promise.allSettled(
 			pingableProviders.map(async (provider) => {
 				try {
 					// P0-FIX: Frontend shell bypass edildi, güvenli arka uç kullanılıyor.
-					const latency = await invoke("check_dns_latency", {
-						dnsIp: provider.ip,
-					});
+					// provider.ip is non-null here (filtered above)
+					const latency = await ipc.checkDnsLatency(provider.ip as string);
 					return { id: provider.id, latency };
 				} catch (e) {
 					console.error(`Ping failed for ${provider.name}:`, e);
@@ -205,7 +219,7 @@ const Settings = ({
 		if (fixStatus === "fixing") return; // P2-FIX: Rapid click guard
 		setFixStatus("fixing");
 		try {
-			await invoke("clear_system_proxy");
+			await ipc.clearSystemProxy();
 
 			// P1-FIX: Ana ekrandaki bağlantı durumunu eşzamanlı güncelle
 			window.dispatchEvent(
@@ -480,18 +494,20 @@ const Settings = ({
 									}}
 								>
 									{ISP_PROFILES.filter((p) => p.id !== "other").map((isp) => {
-										const nameKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Name`;
-										const descKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Desc`;
-										const ICON_MAP = {
+										const nameKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Name` as TranslationKey;
+										const descKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Desc` as TranslationKey;
+										const ICON_MAP: Partial<Record<IspProfileId, React.ReactElement>> = {
 											light: <Activity size={18} />,
 											mid: <Zap size={18} />,
 											heavy: <Shield size={18} />,
 										};
+										const nameVal = t[nameKey];
+										const descVal = t[descKey];
 										const ispData = {
 											...isp,
-											name: t[nameKey] || isp.id,
-											desc: t[descKey] || "",
-											icon: ICON_MAP[isp.id] || <Globe size={18} />,
+											name: (typeof nameVal === "string" ? nameVal : null) || isp.id,
+											desc: (typeof descVal === "string" ? descVal : null) || "",
+											icon: ICON_MAP[isp.id] ?? <Globe size={18} />,
 										};
 										const isApplied =
 											config.dpiMethod === ispData.mode &&
@@ -1034,9 +1050,9 @@ const Settings = ({
 																			whileTap={{ scale: 0.99 }}
 																			onClick={async () => {
 																				try {
-																					await invoke("install_driver");
+																					await ipc.installDriver();
 																					const installed =
-																						await invoke("check_driver");
+																						await ipc.checkDriver();
 																					setDriverInstalled(installed);
 																					if (installed) setNeedsRestart(true);
 																				} catch (e) {
@@ -1276,7 +1292,7 @@ const Settings = ({
 
 										<div style={{ padding: "0 16px 16px 16px" }}>
 											<button
-												onClick={checkAllLatencies}
+												onClick={() => checkAllLatencies()}
 												disabled={isChecking}
 												style={{
 													width: "100%",

@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/core";
+import { invoke, type PluginListener } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import {
@@ -8,7 +8,7 @@ import {
 	sendNotification,
 } from "@tauri-apps/plugin-notification";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { Command } from "@tauri-apps/plugin-shell";
+import { type Child, Command } from "@tauri-apps/plugin-shell";
 // Re-add missing imports
 import DOMPurify from "dompurify";
 import { AnimatePresence, motion } from "framer-motion";
@@ -39,14 +39,28 @@ import {
 	RETRY_DELAYS,
 	URLS,
 } from "./constants";
-import { getTranslations } from "./i18n";
+import {
+	getTranslations,
+	type TranslationKey,
+	type Translations,
+} from "./i18n";
 import {
 	DEFAULT_CHUNKS,
 	ISP_PROFILES,
 	VALID_CHUNK_SIZES,
 	VALID_DPI_METHODS,
 } from "./profiles";
+import { ipc } from "./ipc";
 import Settings from "./Settings";
+import type {
+	AppConfig,
+	DnsKey,
+	DnsLatencies,
+	LogEntry,
+	LogMeta,
+	LogType,
+	UpdateConfig,
+} from "./types";
 
 import "./App.css";
 
@@ -58,18 +72,18 @@ const PURIFY_CONFIG = {
 };
 
 function App() {
-	const [isConnected, setIsConnected] = useState(false);
-	const [logs, setLogs] = useState([]);
+	const [isConnected, setIsConnected] = useState<boolean>(false);
+	const [logs, setLogs] = useState<LogEntry[]>([]);
 	const [currentPort, setCurrentPort] = useState(8080);
 	const currentPortRef = useRef(8080); // ✅ #6: Stale closure önleme
 	const [lanIp, setLanIp] = useState("127.0.0.1"); // ✅ LAN IP State
 	const [pacPort, setPacPort] = useState(8787); // ✅ PAC port (dinamik)
 	const [showConnectionModal, setShowConnectionModal] = useState(false); // ✅ Modal State
 	const [connectionModalTab, setConnectionModalTab] = useState("pac"); // pac | manual
-	const [copiedField, setCopiedField] = useState(null);
+	const [copiedField, setCopiedField] = useState<string | null>(null);
 	const [showLargeQr, setShowLargeQr] = useState(false);
 
-	const handleCopyField = async (text, fieldName) => {
+	const handleCopyField = async (text: string, fieldName: string) => {
 		try {
 			await writeText(text);
 			setCopiedField(fieldName);
@@ -83,7 +97,7 @@ function App() {
 	const [showSettings, setShowSettings] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(true);
 	const [isOnline, setIsOnline] = useState(navigator.onLine); // ✅ Internet Durumu
-	const [dnsLatencies, setDnsLatencies] = useState({}); // ✅ #5: DNS ping sonuçları kalcı
+	const [dnsLatencies, setDnsLatencies] = useState<DnsLatencies>({}); // ✅ #5: DNS ping sonuçları kalcı
 	const [appIsClosingState, setAppIsClosingState] = useState(false); // Shutdown UX
 	const [closingStep, setClosingStep] = useState(0);
 	const [closingDots, setClosingDots] = useState("");
@@ -107,7 +121,8 @@ function App() {
 
 	// Check Admin on Mount
 	useEffect(() => {
-		invoke("check_admin")
+		ipc
+			.checkAdmin()
 			.then((result) => {
 				setIsAdmin(result);
 				if (!result) {
@@ -133,10 +148,10 @@ function App() {
 		window.addEventListener("offline", handleOffline);
 
 		// ✅ Bildirime tıklanınca uygulamayı öne getir
-		let unlistenNotificationAction = null;
+		let unlistenNotificationAction: PluginListener | null = null;
 		const setupNotificationListener = async () => {
 			try {
-				unlistenNotificationAction = await onAction((notification) => {
+				unlistenNotificationAction = await onAction(() => {
 					getCurrentWindow().show();
 					getCurrentWindow().setFocus();
 				});
@@ -150,7 +165,9 @@ function App() {
 			window.removeEventListener("online", handleOnline);
 			window.removeEventListener("offline", handleOffline);
 			if (unlistenNotificationAction) {
-				unlistenNotificationAction();
+				// onAction (plugin-notification) returns a PluginListener, not a
+				// callable unlisten fn — its disposer is `.unregister()`.
+				unlistenNotificationAction.unregister();
 			}
 		};
 	}, []);
@@ -161,8 +178,8 @@ function App() {
 		return !localStorage.getItem("bypax_first_run_done");
 	});
 
-	const [config, setConfig] = useState(() => {
-		const defaultSettings = {
+	const [config, setConfig] = useState<AppConfig>(() => {
+		const defaultSettings: AppConfig = {
 			language: "tr",
 			autoStart: false,
 			autoConnect: false,
@@ -184,17 +201,18 @@ function App() {
 				if (!saved.startsWith("{")) {
 					parsedStr = decodeURIComponent(escape(atob(saved))); // Geriye dönük uyumluluk (eski config)
 				}
-				const parsed = JSON.parse(parsedStr);
+				const parsed: Record<string, unknown> = JSON.parse(parsedStr);
 				if (typeof parsed !== "object" || parsed === null)
 					return defaultSettings;
 
 				// P1-FIX: Load esnasında Sidecar Injection'u engellemek için tip güvenlik (Config Validation)
 				// ✅ FIX: httpsChunkSize artık 1 ve 2 değerlerini de kabul ediyor (ISS profil değerleri)
+				// Validated against the literal sets above, so the narrowing casts are safe.
 				return {
 					...defaultSettings,
 					...parsed,
 					dpiMethod: ["0", "1", "2"].includes(String(parsed.dpiMethod))
-						? String(parsed.dpiMethod)
+						? (String(parsed.dpiMethod) as AppConfig["dpiMethod"])
 						: defaultSettings.dpiMethod,
 					httpsChunkSize: [1, 2, 4, 8, 16, 32, 64, 128].includes(
 						Number(parsed.httpsChunkSize),
@@ -203,9 +221,9 @@ function App() {
 						: defaultSettings.httpsChunkSize,
 					selectedDns:
 						typeof parsed.selectedDns === "string"
-							? parsed.selectedDns
+							? (parsed.selectedDns as AppConfig["selectedDns"])
 							: defaultSettings.selectedDns,
-				};
+				} as AppConfig;
 			} catch (e) {
 				console.error("Failed to parse config:", e);
 				return defaultSettings;
@@ -220,20 +238,22 @@ function App() {
 		[config.language],
 	);
 
-	const childProcess = useRef(null);
+	const childProcess = useRef<Child | null>(null);
 	const isStartingEngine = useRef(false);
-	const logsEndRef = useRef(null);
+	const logsEndRef = useRef<HTMLDivElement | null>(null);
 	const isRetrying = useRef(false);
 
 	// ✅ Auto-reconnect mekanizması
 	const retryCount = useRef(0);
-	const retryTimer = useRef(null);
+	const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const userIntentDisconnect = useRef(false);
 	const fatalErrorRef = useRef(false);
 	// ✅ Çıkış işlemi başladı mı? (çift modal engellemek için)
 	const isExiting = useRef(false);
 	const trayQuitRef = useRef(false);
-	const prevLanSharingRef = useRef(config.lanSharing ?? false);
+	const prevLanSharingRef = useRef<boolean | undefined>(
+		config.lanSharing ?? false,
+	);
 	const prevDpiMethodRef = useRef(config.dpiMethod);
 	const prevChunkSizeRef = useRef(config.httpsChunkSize ?? 4);
 	const prevSelectedDnsRef = useRef(config.selectedDns);
@@ -243,9 +263,12 @@ function App() {
 
 	// DNS_MAP ve DOH_MAP artık component dışında tanımlı (yukarıda)
 
-	const updateConfig = (keyOrObj, value) => {
+	const updateConfig = ((
+		keyOrObj: keyof AppConfig | Partial<AppConfig>,
+		value?: AppConfig[keyof AppConfig],
+	) => {
 		setConfig((prev) => {
-			let newConfig;
+			let newConfig: AppConfig;
 			if (typeof keyOrObj === "object" && keyOrObj !== null) {
 				newConfig = { ...prev, ...keyOrObj };
 			} else {
@@ -255,18 +278,18 @@ function App() {
 			localStorage.setItem("bypax_config", JSON.stringify(newConfig));
 			return newConfig;
 		});
-	};
+	}) as UpdateConfig;
 
 	// Custom Confirm State
-	const confirmResolver = useRef(null);
+	const confirmResolver = useRef<((result: boolean) => void) | null>(null);
 	const [confirmState, setConfirmState] = useState({
 		isOpen: false,
 		title: "",
 		desc: "",
 	});
 
-	const customConfirm = (desc, options) => {
-		return new Promise((resolve) => {
+	const customConfirm = (desc: string, options?: { title?: string }) => {
+		return new Promise<boolean>((resolve) => {
 			setConfirmState({
 				isOpen: true,
 				title: options?.title || "",
@@ -276,7 +299,7 @@ function App() {
 		});
 	};
 
-	const handleConfirmResult = (result) => {
+	const handleConfirmResult = (result: boolean) => {
 		setConfirmState((prev) => ({ ...prev, isOpen: false }));
 		if (confirmResolver.current) {
 			confirmResolver.current(result);
@@ -284,7 +307,11 @@ function App() {
 		}
 	};
 
-	const notifyUser = async (title, body, eventType) => {
+	const notifyUser = async (
+		title: string,
+		body: string,
+		eventType: "connect" | "disconnect" | "disconnect_manual",
+	) => {
 		try {
 			if (configRef.current.notifications === false) return; // Kullanıcı bildirimleri kapattıysa
 			if (
@@ -316,17 +343,24 @@ function App() {
 		}
 	};
 
-	const resolveI18nMessage = (key, params = []) => {
+	const resolveI18nMessage = (
+		key: TranslationKey | string,
+		params: readonly unknown[] = [],
+	): string => {
 		if (!key) return "";
-		const value = t[key];
+		// `key` may be a non-translation string (e.g. an unmapped log key); the
+		// runtime `!value` guard below handles the miss. The cast only narrows the
+		// index type — an unknown key yields `undefined`, same as before.
+		const value: Translations[TranslationKey] | undefined =
+			t[key as TranslationKey];
 		if (!value) return "";
 		if (typeof value === "function") {
-			return value(...params);
+			return (value as (...args: readonly unknown[]) => string)(...params);
 		}
 		return value;
 	};
 
-	const addLog = (msg, type = "info", meta = {}) => {
+	const addLog = (msg: string, type: LogType = "info", meta: LogMeta = {}) => {
 		const { i18nKey, i18nParams } = meta;
 
 		let finalMsg = msg;
@@ -410,19 +444,21 @@ function App() {
 	};
 
 	// ✅ Exponential backoff hesaplama — ilk retry'da da 2.5s bekle (TIME_WAIT)
-	const getRetryDelay = (attempt) => {
-		return RETRY_DELAYS[Math.min(attempt, RETRY_DELAYS.length - 1)];
+	const getRetryDelay = (attempt: number): number => {
+		return RETRY_DELAYS[Math.min(attempt, RETRY_DELAYS.length - 1)] ?? 0;
 	};
 
 	// ✅ Tray tooltip güncelle — configRef + currentPortRef kullanarak stale closure önlenir
-	const updateTrayTooltip = async (status) => {
+	const updateTrayTooltip = async (
+		status: "connected" | "disconnected" | "retrying" | "connecting",
+	) => {
 		try {
 			let tooltip = "";
 			switch (status) {
 				case "connected": {
 					const selectedDns = configRef.current.selectedDns;
 					const dnsName = DNS_MAP[selectedDns]
-						? Object.keys(DNS_MAP)
+						? (Object.keys(DNS_MAP) as DnsKey[])
 								.find((key) => DNS_MAP[key] === DNS_MAP[selectedDns])
 								?.toUpperCase()
 						: "SYSTEM";
@@ -441,7 +477,7 @@ function App() {
 				default:
 					tooltip = "🛡️ BypaxDPI";
 			}
-			await invoke("update_tray_tooltip", { tooltip });
+			await ipc.updateTrayTooltip(tooltip);
 		} catch (e) {
 			console.error("Tray tooltip güncelleme hatası:", e);
 		}
@@ -513,10 +549,13 @@ function App() {
 	};
 
 	// Port açık mı? Rust ile TCP bağlantı dener
-	const waitForPort = async (port, maxAttempts = APP.portCheckMaxAttempts) => {
+	const waitForPort = async (
+		port: number,
+		maxAttempts: number = APP.portCheckMaxAttempts,
+	) => {
 		for (let i = 0; i < maxAttempts; i++) {
 			try {
-				const open = await invoke("check_port_open", { port });
+				const open = await ipc.checkPortOpen(port);
 				if (open) return true;
 			} catch (e) {
 				console.warn("Port check error:", e);
@@ -526,7 +565,7 @@ function App() {
 		return false;
 	};
 
-	const startEngine = async (ignoredPort, portRetryCount = 0) => {
+	const startEngine = async (ignoredPort: number, portRetryCount = 0) => {
 		// P2-FIX: Asynchronous execution lock -> Aynı anda iki instance spawn edilmesini önler
 		if (isStartingEngine.current || childProcess.current) return;
 		isStartingEngine.current = true;
@@ -545,15 +584,14 @@ function App() {
 		}
 
 		// ✅ Rust'tan Smart Configuration al (Port & IP)
-		let configData;
-		let port;
-		let bindAddr;
+		let port: number;
+		let bindAddr: string;
 
 		try {
-			configData = await invoke("get_sidecar_config", {
-				allowLanSharing: configRef.current.lanSharing || false,
-				enableGameMode: configRef.current.enableWinhttp !== false,
-			});
+			const configData = await ipc.getSidecarConfig(
+				configRef.current.lanSharing || false,
+				configRef.current.enableWinhttp !== false,
+			);
 			port = configData.port;
 			bindAddr = configData.bind_address;
 			setLanIp(configData.lan_ip); // IP'yi state'e kaydet
@@ -567,9 +605,12 @@ function App() {
 			return;
 		}
 
-		if (childProcess.current) {
+		// `childProcess.current` is narrowed to null by the spawn-lock guard above,
+		// but the ref is mutable across the awaits in between, so re-read it widened.
+		const existingChild = childProcess.current as Child | null;
+		if (existingChild) {
 			try {
-				await childProcess.current.kill();
+				await existingChild.kill();
 			} catch (_) {}
 			childProcess.current = null;
 		}
@@ -644,7 +685,7 @@ function App() {
 				: "2";
 
 			// 🛑 Önemli: Sürücü kontrolü yap (Rust tarafındaki check_driver komutunu kullan)
-			const hasDriver = await invoke("check_driver");
+			const hasDriver = await ipc.checkDriver();
 
 			if (dpiMethod === "2") {
 				const advancedBypass = configRef.current.advancedBypass !== false; // default true if driver installed
@@ -698,12 +739,12 @@ function App() {
 			const SKIP_PATTERN =
 				/\[(?:PROXY|DNS|HTTPS|CACHE|app)]|method:\s*CONNECT|cache (?:miss|hit)|resolving|routing|resolution took|new conn|client sent hello|shouldExploit|useSystemDns|fragmentation|conn established|writing chunked|caching \d+ records|[a-f0-9]{8}-[a-f0-9]{8}|d88|Y88|88P|level=|ctrl \+ c|listen_addr|dns_addr|github\.com|spoofdpi|connection timeout|\[::1\]|ipv6|AAAA|no suitable address|network is unreachable|connectex.*\[|telemetry\.net|dns lookup failed/i;
 			// Bağlantı kesilirken / yeniden bağlanırken SpoofDPI tüm tünelleri kapatır; her biri "error handling request" / "wsarecv ... aborted" WRN basar - kullanıcı loguna taşıma
-			const isTunnelShutdownNoise = (l) =>
+			const isTunnelShutdownNoise = (l: string) =>
 				/\[pxy\].*error handling request|unsuccessful tunnel|wsarecv|aborted by the software in your host machine|failed to read http request|malformed HTTP request|invalid method/i.test(
 					l,
 				);
 
-			const handleOutput = async (line, type) => {
+			const handleOutput = async (line: string, type: LogType) => {
 				const trimmedLine = line.trim();
 				const lowerLine = line.toLowerCase();
 
@@ -718,8 +759,8 @@ function App() {
 				const alphaCount = line.replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ]/g, "").length;
 				if (alphaCount < 5 && trimmedLine.length > 3) return;
 
-				let friendlyKey = null;
-				let friendlyParams = [];
+				let friendlyKey: TranslationKey | null = null;
+				let friendlyParams: readonly unknown[] = [];
 
 				const isWpcapError =
 					lowerLine.includes("couldn't load wpcap.dll") ||
@@ -756,7 +797,7 @@ function App() {
 				if (friendlyKey) {
 					const msg = resolveI18nMessage(friendlyKey, friendlyParams);
 					// Her mesaj tipine uygun renk ata
-					let logType = "info";
+					let logType: LogType = "info";
 					if (friendlyKey === "logWpcapMissing") {
 						logType = "error";
 					} else if (friendlyKey === "logPortBusy") {
@@ -806,10 +847,10 @@ function App() {
 					setCurrentPort(port);
 					currentPortRef.current = port;
 					try {
-						await invoke("set_system_proxy", {
+						await ipc.setSystemProxy(
 							port,
-							enableWinhttp: configRef.current.enableWinhttp !== false,
-						});
+							configRef.current.enableWinhttp !== false,
+						);
 						addLog(t.logProxySet(port), "success", {
 							i18nKey: "logProxySet",
 							i18nParams: [port],
@@ -839,9 +880,7 @@ function App() {
 					if (configRef.current.lanSharing) {
 						(async () => {
 							try {
-								const pacResult = await invoke("start_pac_server", {
-									proxyPort: port,
-								});
+								const pacResult = await ipc.startPacServer(port);
 								if (pacResult?.pac_port) setPacPort(pacResult.pac_port);
 								addLog(t.logPacStarted, "success", {
 									i18nKey: "logPacStarted",
@@ -912,7 +951,10 @@ function App() {
 					// Kullanıcı kasıtlı kapatmadı - beklenmedik kapanma
 					if (isUnexpectedClose) {
 						const exitCode = data.code ?? "Bilinmiyor (Zorla Kapatıldı)";
-						const warnMsg = `⚠️ ${t.logEngineStopped(exitCode)}`;
+						// `logEngineStopped` only interpolates the value; within this
+						// branch `data.code` is a non-null number, so the string fallback
+						// is unreachable. Cast keeps the existing runtime string intact.
+						const warnMsg = `⚠️ ${t.logEngineStopped(exitCode as number)}`;
 						addLog(warnMsg, "warn", {
 							i18nKey: "logEngineStopped",
 							i18nParams: [exitCode],
@@ -988,7 +1030,7 @@ function App() {
 
 			const child = await command.spawn();
 			childProcess.current = child;
-			invoke("save_sidecar_pid", { pid: child.pid }).catch(console.warn);
+			ipc.saveSidecarPid(child.pid).catch(console.warn);
 			isStartingEngine.current = false; // Mülkiyeti childProcess'e devret
 
 			// Failsafe timeout
@@ -1001,11 +1043,9 @@ function App() {
 					// P1-FIX: Proxy'yi Windows'a yazmadan önce uygulamanın gerçekten port dinlediğini TCP ile doğrula
 					const portReady = await waitForPort(port, 3);
 					if (!portReady) {
-						addLog(
-							t.logFailsafePortClosed ||
-								"Beklenmeyen Hata: Proxy başlatılamadı",
-							"error",
-						);
+						addLog(t.logFailsafePortClosed, "error", {
+							i18nKey: "logFailsafePortClosed",
+						});
 						if (childProcess.current) {
 							childProcess.current.kill().catch(() => {});
 							childProcess.current = null;
@@ -1019,10 +1059,10 @@ function App() {
 					currentPortRef.current = port;
 
 					try {
-						await invoke("set_system_proxy", {
-							port: port,
-							enableWinhttp: configRef.current.enableWinhttp !== false,
-						});
+						await ipc.setSystemProxy(
+							port,
+							configRef.current.enableWinhttp !== false,
+						);
 					} catch (err) {
 						addLog(t.logProxySetError(err), "error", {
 							i18nKey: "logProxySetError",
@@ -1041,9 +1081,7 @@ function App() {
 					updateTrayTooltip("connected"); // ✅ Auto-connect başarılı
 					if (configRef.current.lanSharing) {
 						try {
-							const pacResult = await invoke("start_pac_server", {
-								proxyPort: port,
-							});
+							const pacResult = await ipc.startPacServer(port);
 							if (pacResult?.pac_port) setPacPort(pacResult.pac_port);
 							addLog(t.logPacStarted, "success", { i18nKey: "logPacStarted" });
 						} catch (e) {
@@ -1282,7 +1320,7 @@ function App() {
 		(async () => {
 			try {
 				// P0-FIX-1: Crash/BSOD sonrası kalan proxy ayarlarını sentinel ile tespit edip temizle
-				const wasDirty = await invoke("startup_proxy_cleanup").catch((e) => {
+				const wasDirty = await ipc.startupProxyCleanup().catch((e) => {
 					console.warn("Startup proxy cleanup:", e);
 					return false;
 				});
@@ -1297,7 +1335,7 @@ function App() {
 				}
 
 				// ✅ Sorun 4: Zombi süreçleri temizle (önceki çökme/force kill sonrası kalmış olabilir)
-				await invoke("kill_zombie_sidecar").catch((e) =>
+				await ipc.killZombieSidecar().catch((e) =>
 					console.log("Zombi temizleme:", e),
 				);
 				// ✅ Sorun 1: Proxy'yi temizle (çökme sonrası kalıntı)
@@ -1406,8 +1444,10 @@ function App() {
 			return { unlisten, unlistenTrayQuit };
 		};
 
-		let unlistenFn;
-		initListener().then((fn) => (unlistenFn = fn));
+		let unlistenFn: Awaited<ReturnType<typeof initListener>> | undefined;
+		initListener().then((fn) => {
+			unlistenFn = fn;
+		});
 
 		return () => {
 			if (unlistenFn) {
@@ -1509,8 +1549,11 @@ function App() {
 	// Auto-connect on mount mantığı P1-FIX kapsamında main cleanup rutinine taşındı (Race Condition'ı önlemek için)
 	// P1-FIX: Ayarlardan manuel "İnterneti Onar" tetiklendiğinde senkronize olarak Sidecar'ı kapat ve state'i sıfırla
 	useEffect(() => {
-		const handleForceDisconnect = async (e) => {
-			console.log("[FORCE-DISCONNECT]", e.detail?.reason);
+		const handleForceDisconnect = async (e: Event) => {
+			console.log(
+				"[FORCE-DISCONNECT]",
+				(e as CustomEvent<{ reason?: string }>).detail?.reason,
+			);
 
 			// Bağlıysa kes
 			if (childProcess.current) {
@@ -1579,10 +1622,10 @@ function App() {
 	// Native App Experience: Disable browser-like behaviors
 	useEffect(() => {
 		// Disable right-click
-		const handleContextMenu = (e) => e.preventDefault();
+		const handleContextMenu = (e: Event) => e.preventDefault();
 
 		// Disable refresh and dev shortcuts
-		const handleKeyDown = (e) => {
+		const handleKeyDown = (e: KeyboardEvent) => {
 			const isCmdOrCtrl = e.metaKey || e.ctrlKey;
 
 			// Block F5, F11 (Fullscreen), F12
@@ -1601,7 +1644,7 @@ function App() {
 
 		// Prevent accidental text selection (optional but recommended for buttons/UI)
 		// and prevent dragging of images/links
-		const handleDragStart = (e) => e.preventDefault();
+		const handleDragStart = (e: Event) => e.preventDefault();
 
 		document.addEventListener("contextmenu", handleContextMenu);
 		document.addEventListener("keydown", handleKeyDown);
@@ -1896,8 +1939,12 @@ function App() {
 										width: "100%",
 										transition: "opacity 0.2s",
 									}}
-									onMouseEnter={(e) => (e.target.style.opacity = "0.9")}
-									onMouseLeave={(e) => (e.target.style.opacity = "1")}
+									onMouseEnter={(e) => {
+										(e.target as HTMLElement).style.opacity = "0.9";
+									}}
+									onMouseLeave={(e) => {
+										(e.target as HTMLElement).style.opacity = "1";
+									}}
 									onClick={async () => {
 										try {
 											await invoke("quit_app");
@@ -2005,8 +2052,10 @@ function App() {
 								}}
 							>
 								{ISP_PROFILES.map((isp) => {
-									const nameKey = `iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Name`;
-									const ispName = t[nameKey] || isp.id;
+									const nameKey =
+										`iss${isp.id.charAt(0).toUpperCase() + isp.id.slice(1)}Name` as TranslationKey;
+									// These iss*Name keys are all string-valued (never functions).
+									const ispName = (t[nameKey] as string) || isp.id;
 									const isSelected = config.selectedIspProfile === isp.id;
 									return (
 										<motion.div
@@ -3236,7 +3285,7 @@ function App() {
 											e.currentTarget.style.color = "#cbd5e1";
 										}}
 									>
-										{t.btnNo || "İptal"}
+										{t.btnNo}
 									</button>
 									<button
 										onClick={() => handleConfirmResult(true)}
@@ -3267,7 +3316,7 @@ function App() {
 												"0 4px 14px rgba(239, 68, 68, 0.3)";
 										}}
 									>
-										{t.btnYes || "Onayla"}
+										{t.btnYes}
 									</button>
 								</div>
 							</div>
