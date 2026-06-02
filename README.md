@@ -126,6 +126,34 @@ BypaxDPI, kod düzeyindedir ve tamamen "0 Zafiyet" denetiminden (Security Audit)
 
 ---
 
+## 🛠️ Geliştirme (Build from Source)
+
+Bu bir **Bun + TypeScript + Tauri v2** projesidir. Mimari ve kararlar için
+[ARCHITECTURE.md](./ARCHITECTURE.md), neden-nasıl geçmişi için
+[HISTORY.md](./HISTORY.md), terimler için [GLOSSARY.md](./GLOSSARY.md),
+yol haritası için [ROADMAP.md](./ROADMAP.md) dosyalarına bakın.
+
+**Gereksinimler:** Bun, Rust (Windows derlemesi için MSVC toolchain), Go ve
+SpoofDPI kaynağının (`SpoofDPI-<sürüm>/`) depo köküne çıkarılması.
+
+```bash
+bun install
+bun run build-proxy     # SpoofDPI'ı derler → src-tauri/binaries/ (Go gerekir)
+bun run tauri dev       # geliştirme
+# yayın paketi:
+bun run tauri build     # NSIS/MSI üretir
+
+# Kalite kontrolleri:
+bun run typecheck       # tsc --build (sıfır hata)
+bun run lint            # biome check
+bun run format          # biome format --write
+```
+
+SpoofDPI sürümü ve hedef platform `scripts/proxy.config.ts` içinde dışsallaştırılmıştır
+(`SPOOFDPI_VERSION`, `TARGET_TRIPLE` ortam değişkenleriyle geçersiz kılınabilir).
+
+---
+
 ## 🤝 Geliştirici & Destek
 
 Bu proje açık kaynaklı, tamamen hür bir topluluk girişimidir. BypaxDPI'ın yaşaması, donanımlarının güncellenmesi için bana kahve ısmarlamak isterseniz:
