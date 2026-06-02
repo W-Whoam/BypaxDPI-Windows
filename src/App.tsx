@@ -47,6 +47,12 @@ import {
 import { ipc } from "./ipc";
 import { ISP_PROFILES } from "./profiles";
 import Settings from "./Settings";
+import {
+	isFirstRunDone,
+	loadConfig,
+	markFirstRunDone,
+	saveConfig,
+} from "./storage";
 import type {
 	AppConfig,
 	DnsKey,
@@ -169,63 +175,11 @@ function App() {
 
 	// Settings State
 	// ✅ İlk giriş overlay state
-	const [showFirstRunISS, setShowFirstRunISS] = useState(() => {
-		return !localStorage.getItem("bypax_first_run_done");
-	});
+	const [showFirstRunISS, setShowFirstRunISS] = useState(
+		() => !isFirstRunDone(),
+	);
 
-	const [config, setConfig] = useState<AppConfig>(() => {
-		const defaultSettings: AppConfig = {
-			language: "tr",
-			autoStart: false,
-			autoConnect: false,
-			minimizeToTray: false,
-			dnsMode: "manual",
-			selectedDns: "cloudflare",
-			autoReconnect: true,
-			dpiMethod: "2",
-			httpsChunkSize: 1,
-			ipv4Only: true,
-			selectedIspProfile: "heavy",
-		};
-
-		const saved = localStorage.getItem("bypax_config");
-		if (saved) {
-			try {
-				// P1-FIX: LocalStorage Obfuscation (Uyumluluk için önce düz metin mi kontrol et)
-				let parsedStr = saved;
-				if (!saved.startsWith("{")) {
-					parsedStr = decodeURIComponent(escape(atob(saved))); // Geriye dönük uyumluluk (eski config)
-				}
-				const parsed: Record<string, unknown> = JSON.parse(parsedStr);
-				if (typeof parsed !== "object" || parsed === null)
-					return defaultSettings;
-
-				// P1-FIX: Load esnasında Sidecar Injection'u engellemek için tip güvenlik (Config Validation)
-				// ✅ FIX: httpsChunkSize artık 1 ve 2 değerlerini de kabul ediyor (ISS profil değerleri)
-				// Validated against the literal sets above, so the narrowing casts are safe.
-				return {
-					...defaultSettings,
-					...parsed,
-					dpiMethod: ["0", "1", "2"].includes(String(parsed.dpiMethod))
-						? (String(parsed.dpiMethod) as AppConfig["dpiMethod"])
-						: defaultSettings.dpiMethod,
-					httpsChunkSize: [1, 2, 4, 8, 16, 32, 64, 128].includes(
-						Number(parsed.httpsChunkSize),
-					)
-						? Number(parsed.httpsChunkSize)
-						: defaultSettings.httpsChunkSize,
-					selectedDns:
-						typeof parsed.selectedDns === "string"
-							? (parsed.selectedDns as AppConfig["selectedDns"])
-							: defaultSettings.selectedDns,
-				} as AppConfig;
-			} catch (e) {
-				console.error("Failed to parse config:", e);
-				return defaultSettings;
-			}
-		}
-		return defaultSettings;
-	});
+	const [config, setConfig] = useState<AppConfig>(loadConfig);
 
 	// ✅ i18n: Reactive translations (config'den sonra olmalı!)
 	const t = useMemo(
@@ -270,7 +224,7 @@ function App() {
 				newConfig = { ...prev, [keyOrObj]: value };
 			}
 			// P1-FIX: Base64 kodlaması kaldırıldı, plaintext validasyonlu yazılıyor
-			localStorage.setItem("bypax_config", JSON.stringify(newConfig));
+			saveConfig(newConfig);
 			return newConfig;
 		});
 	}) as UpdateConfig;
@@ -989,10 +943,7 @@ function App() {
 						);
 						configRef.current = { ...configRef.current, advancedBypass: false };
 						setConfig((prev) => ({ ...prev, advancedBypass: false }));
-						localStorage.setItem(
-							"bypax_config",
-							JSON.stringify({ ...configRef.current, advancedBypass: false }),
-						);
+						saveConfig({ ...configRef.current, advancedBypass: false });
 						retryCount.current = 0; // Reset retry
 						fatalErrorRef.current = false; // Hatayı temizle, tekrar denesin
 						setIsProcessing(true);
@@ -1340,7 +1291,7 @@ function App() {
 
 				// P1-FIX: Auto-Connect Race Condition çözümü (Temizlik adımları tamamlandıktan SONRA bağlan)
 				// ✅ İlk giriş overlay'ı açıksa auto-connect yapma — kullanıcı ISS seçsin önce
-				const isFirstRun = !localStorage.getItem("bypax_first_run_done");
+				const isFirstRun = !isFirstRunDone();
 				if (
 					configRef.current.autoConnect &&
 					!childProcess.current &&
@@ -2161,7 +2112,7 @@ function App() {
 
 							<button
 								onClick={() => {
-									localStorage.setItem("bypax_first_run_done", "true");
+									markFirstRunDone();
 									setShowFirstRunISS(false);
 									// Otomatik bağlan
 									if (!isConnected && !isProcessing) {
@@ -2207,7 +2158,7 @@ function App() {
 
 							<button
 								onClick={() => {
-									localStorage.setItem("bypax_first_run_done", "true");
+									markFirstRunDone();
 									setShowFirstRunISS(false);
 								}}
 								style={{
