@@ -32,6 +32,13 @@ export type DnsKey =
 /** ISP preset chosen in the first-run overlay / settings guide. */
 export type IspProfileId = "light" | "mid" | "heavy" | "other";
 
+/**
+ * The value stored in {@link AppConfig.selectedIspProfile}: one of the presets,
+ * or `"custom"` once the user hand-tunes settings away from any preset. There
+ * is no `"custom"` entry in {@link ISP_PROFILES} — it only marks "no preset".
+ */
+export type SelectedIspProfile = IspProfileId | "custom";
+
 /** Severity of a line in the in-app log panel. */
 export type LogType = "info" | "success" | "error" | "warn";
 
@@ -75,7 +82,7 @@ export type AppConfig = {
 	dpiMethod: DpiMethod;
 	httpsChunkSize: number;
 	ipv4Only: boolean;
-	selectedIspProfile: IspProfileId;
+	selectedIspProfile: SelectedIspProfile;
 
 	lanSharing?: boolean;
 	/** Game Mode (WinHTTP proxy). Defaults to true (`!== false`). */

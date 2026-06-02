@@ -140,6 +140,9 @@ const translations = {
       "SpoofDPI, wpcap.dll kütüphanesini bulamadı. Lütfen Npcap veya WinPcap kurun ve ardından uygulamayı yeniden başlatın.",
     logAntivirusWarning:
       "Windows Defender veya antivirüs yazılımınız 'bypax-proxy.exe' dosyasını engellemiş olabilir. Lütfen dosyayı antivirüs dışlama listesine (exclusion) ekleyin.",
+    logFailsafePortClosed: "Beklenmeyen Hata: Proxy başlatılamadı",
+    logDirtyShutdownRecovery:
+      "⚠️ Önceki oturum düzgün kapanmamış — proxy ayarları temizlendi",
 
     // ===== SETTINGS.JSX =====
     settingsTitle: "AYARLAR",
@@ -316,6 +319,8 @@ const translations = {
     confirmDisconnectTitle: "Bağlantıyı Kes",
     confirmDisconnectDesc:
       "Güvenli bağlantınızı sonlandırmak istediğinize emin misiniz?",
+    btnNo: "İptal",
+    btnYes: "Onayla",
 
     // Settings Tabs
     tabGeneral: "GENEL",
@@ -461,6 +466,9 @@ const translations = {
       "SpoofDPI could not find wpcap.dll. Please install Npcap or WinPcap, then restart the application.",
     logAntivirusWarning:
       "Windows Defender or your antivirus software may have blocked 'bypax-proxy.exe'. Please add the file to your antivirus exclusion list.",
+    logFailsafePortClosed: "Unexpected error: Proxy could not start",
+    logDirtyShutdownRecovery:
+      "⚠️ Previous session did not close cleanly — proxy settings cleared",
 
     // ===== SETTINGS.JSX =====
     settingsTitle: "SETTINGS",
@@ -633,6 +641,8 @@ const translations = {
     confirmDisconnectTitle: "Disconnect",
     confirmDisconnectDesc:
       "Are you sure you want to terminate your secure connection?",
+    btnNo: "Cancel",
+    btnYes: "Confirm",
 
     // Settings Tabs
     tabGeneral: "GENERAL",
