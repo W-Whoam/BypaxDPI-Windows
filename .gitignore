@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Package managers — this is a Bun project; bun.lock is the only committed lockfile.
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TS incremental build info (tsc --build)
+*.tsbuildinfo
+
+# Generated Tauri config schema dump (regenerated on demand; not source)
+tauri_schema.json
+
 # Editor directories and files
 .idea
 .DS_Store
