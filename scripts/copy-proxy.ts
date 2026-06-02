@@ -1,31 +1,27 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
- * Copy bypax-proxy.exe from spoofdpi/ to src-tauri/binaries/
- * so Tauri sidecar finds it (dev + bundle).
- * Run after building the proxy: npm run build-proxy && npm run copy-proxy
+ * Copy the built SpoofDPI sidecar from `spoofdpi/` into `src-tauri/binaries/`
+ * under both the plain and target-triple-suffixed names Tauri expects (dev +
+ * bundle). Run standalone with `bun run copy-proxy`, or implicitly via
+ * `bun run build-proxy`.
  */
-const fs = require("fs");
-const path = require("path");
+import { copyFileSync, existsSync, mkdirSync } from "node:fs";
+import {
+	BINARIES_DIR,
+	resolveTarget,
+	SIDECAR_NAME,
+	sidecarPaths,
+} from "./proxy.config";
 
-const root = path.resolve(__dirname, "..");
-const src = path.join(root, "spoofdpi", "bypax-proxy.exe");
-const destDir = path.join(root, "src-tauri", "binaries");
-const destExe = path.join(destDir, "bypax-proxy.exe");
-const destTriple = path.join(destDir, "bypax-proxy-x86_64-pc-windows-msvc.exe");
+const target = resolveTarget();
+const { built, plain, triple } = sidecarPaths(target);
 
-if (!fs.existsSync(src)) {
-  console.error(
-    "spoofdpi/bypax-proxy.exe not found. Build it first: npm run build-proxy",
-  );
-  process.exit(1);
+if (!existsSync(built)) {
+	console.error(`${built} not found. Build it first: bun run build-proxy`);
+	process.exit(1);
 }
 
-if (!fs.existsSync(destDir)) {
-  fs.mkdirSync(destDir, { recursive: true });
-}
-
-fs.copyFileSync(src, destExe);
-fs.copyFileSync(src, destTriple);
-console.log(
-  "Copied bypax-proxy.exe to src-tauri/binaries/ (and -x86_64-pc-windows-msvc.exe)",
-);
+mkdirSync(BINARIES_DIR, { recursive: true });
+copyFileSync(built, plain);
+copyFileSync(built, triple);
+console.log(`Copied ${SIDECAR_NAME} → ${plain} and ${triple}`);
