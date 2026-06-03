@@ -122,3 +122,47 @@ inline ignores.
 `bun run typecheck` → 0 errors. `bun run lint` → green (0 errors; warnings are the
 intentional ref-based effects). `bunx vite build` → bundles cleanly (2127
 modules). The project is now genuinely type-based, not type-named.
+
+---
+
+## Upstream reconciliation (2026-06)
+
+### We are a hard fork now
+
+This repo forked `BypaxDPI/BypaxDPI-Windows` at `4b4fcdf`. Since then upstream
+added two commits — a `docs/` directory and a README/​.gitignore tweak — but
+**stayed on the pre-migration JS/JSX codebase** (`App.jsx`, `constants.js`,
+triplicated `.cjs`/`.js`/`.ps1` scripts, no Biome/tsconfig). Our fork rewrote that
+same surface in TypeScript. The two trees no longer git-merge cleanly: upstream's
+`App.jsx` will never merge into our `App.tsx`.
+
+Decision recorded so the next session doesn't try: **treat upstream as a hard
+fork.** We pull *facts and bugfixes* from it by hand, never `git merge`. Closes
+off: free upstream sync. Buys: a clean typed codebase that owns its own shape.
+
+### Decision: mine upstream's `docs/`, don't merge it
+
+Upstream's two new commits are a 1867-line Turkish `docs/` tree (architecture,
+api-reference, security, troubleshooting, …). Merging it verbatim was rejected for
+two reasons: it would stand up a *second* doc surface parallel to our root docs
+(the exact drift the doc regime exists to prevent), and — more importantly — **its
+technical facts are stale relative to the code both forks share.** Verified against
+`lib.rs`/`App.tsx`:
+
+| upstream `docs/` says | actual code |
+| --- | --- |
+| SpoofDPI **1.2.1** | build pinned **1.5.3**; `App.tsx` uses v1.5.x args |
+| `-port -dns -http-chunk-size -window-size` (single-dash) | `--listen-addr --https-split-mode --dns-https-url --https-fake-count` |
+| `-dns-type doh/udp/system` | `--dns-mode https/udp/system` |
+| PAC path `/pac` | `/proxy.pac` (+ `/wpad.dat`) — `lib.rs:729` |
+| `start_pac_server` → `{pacPort, pacUrl}` | `PacResponse { pac_port }` — `lib.rs:803`; our `ipc.ts` was already right |
+
+So our migration's `ipc.ts` and engine-arg builder are *more accurate than
+upstream's own documentation*. Merging would have injected lies into a repo whose
+CLAUDE.md declares docs the source of truth. Instead, the **accurate** parts
+(connection lifecycle, recovery matrix, panic hook, single-instance mutex, CSP,
+bypass list, reconnect backoff `2.5s→3s→6s→12s→20s`/max 5) were verified against
+the Rust/TS source and folded into `ARCHITECTURE.md` §6–§7.
+
+Leftover code drift noted for a future (non-docs) session: `App.tsx` still has two
+`// SpoofDPI 1.2.1` comments near the TIME_WAIT delays — see ROADMAP.

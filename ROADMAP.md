@@ -45,6 +45,9 @@ the GitHub release so a fresh clone can build the sidecar with one command.
   responsibility-separated modules and hooks.
 - Consider extracting the engine-argument builder out of `App.tsx` (prerequisite
   for the pluggable-engine work above).
+- **Stale comments.** `App.tsx` has two `// SpoofDPI 1.2.1` comments near the
+  ~2500 ms TIME_WAIT delays, left from before the 1.5.3 pin. Harmless, but correct
+  them when the engine-arg builder is touched (see HISTORY → Upstream reconciliation).
 
 ## Packaging
 

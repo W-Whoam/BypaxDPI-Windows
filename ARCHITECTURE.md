@@ -117,6 +117,29 @@ bypass modes map to SpoofDPI behaviour:
 | `"1"` | Balanced | HTTPS/TLS chunk split (order preserved). |
 | `"2"` | Strong | Chunk split + packet disorder; optional Npcap fake-packet injection. |
 
+### Argument surface
+
+`App.tsx` builds the sidecar's argv from the live `AppConfig` (see the builder
+around `App.tsx:595`). These are **SpoofDPI v1.5.x** flags (double-dash). Older
+SpoofDPI docs describe a v1.2.1 single-dash surface (`-port`, `-dns`,
+`-http-chunk-size`, `-window-size`) that **no longer applies** — the build is
+pinned to 1.5.3 and the args below are authoritative.
+
+| Flag | Value | When |
+| --- | --- | --- |
+| `--clean` | — | always |
+| `--listen-addr` | `<bind>:<port>` | always (`bind` = `0.0.0.0` for LAN/Game mode, else `127.0.0.1`) |
+| `--timeout` | ms | always; per-mode from `DPI_TIMEOUTS[dpiMethod]` |
+| `--silent`, `--log-level` | `info` | always |
+| `--dns-qtype` | `ipv4` / `all` | `ipv4` when `ipv4Only` (default), else `all` |
+| `--dns-mode` | `system` | DNS = system, or no resolver IP |
+| `--dns-mode https --dns-https-url` | DoH URL | DoH resolver (URL from `DOH_MAP`) |
+| `--dns-addr <ip>:53 --dns-mode udp` | — | plain-UDP resolver |
+| `--https-split-mode sni` | — | mode `"0"` Turbo |
+| `--https-split-mode chunk --https-chunk-size` | 1–16 | mode `"1"` Balanced (`httpsChunkSize`) |
+| `--https-split-mode chunk --https-chunk-size 1` | — | mode `"2"` Strong, no driver / advanced off |
+| `… --https-fake-count 3` | — | mode `"2"` Strong **with** Npcap + `advancedBypass` |
+
 **Engine abstraction is a seam, not yet an abstraction.** Today the argument
 builder and lifecycle in `App.tsx` are SpoofDPI-specific. A second engine
 ([zapret2](https://github.com/bol-van/zapret2)) is planned — see
@@ -124,7 +147,83 @@ builder and lifecycle in `App.tsx` are SpoofDPI-specific. A second engine
 (build args from `AppConfig` → spawn → parse readiness/errors) with SpoofDPI and
 zapret2 as implementations.
 
-## 6. Toolchain
+## 6. Connection lifecycle & recovery
+
+**Connect** (orchestrated in `App.tsx`, privileged steps delegated to Rust):
+
+1. Internet-reachability check.
+2. Admin-rights check (`ipc.checkAdmin`) — warn if not elevated.
+3. Port + safe LAN IP resolution (`ipc.getSidecarConfig`).
+4. Kill any zombie sidecar from a previous run (`ipc.killZombieSidecar`).
+5. Clear any leftover system proxy (`ipc.startupProxyCleanup` on launch).
+6. Spawn SpoofDPI with the built args (§5).
+7. Wait for the sidecar's "listening" readiness line on stdout.
+8. Verify the TCP port is actually open (`ipc.checkPortOpen`).
+9. Write the Windows system proxy (`ipc.setSystemProxy`).
+10. Optionally tunnel WinHTTP + add the UWP loopback exemption (Game Mode).
+11. Persist the sidecar PID (`ipc.saveSidecarPid`) and drop the sentinel file.
+12. Start the PAC server if LAN sharing is on (`ipc.startPacServer`).
+13. Update the tray tooltip → **connected**.
+
+**Disconnect:** stop the sidecar → clear the system proxy (restoring any backed-up
+corporate proxy) → remove the sentinel → flip the PAC body to `DIRECT` (the PAC
+server keeps listening so LAN clients never lose connectivity).
+
+**Recovery matrix:**
+
+| Scenario | Detection | Action |
+| --- | --- | --- |
+| Crash / BSOD left proxy set | sentinel file present at launch | `startup_proxy_cleanup` restores networking |
+| Port already in use | sidecar "bind … in use" on stdout | bump port and retry |
+| Npcap missing in Strong mode | no `wpcap.dll` (`ipc.checkDriver`) | drop fake-packet, fall back to chunk-1 |
+| Connection dropped | sidecar exit / process gone | exponential backoff reconnect: `2.5s → 3s → 6s → 12s → 20s`, max 5 (`RETRY_DELAYS`, `APP.maxReconnectAttempts`) |
+| Network offline | browser `offline` event | warn and pause reconnect |
+
+**State & recovery files:**
+
+| Store | Key / path | Holds |
+| --- | --- | --- |
+| `localStorage` | `bypax_config` | all user settings (`AppConfig`, plaintext JSON, validated on load) |
+| `localStorage` | `bypax_first_run_done` | first-run ISP overlay flag |
+| Registry (HKCU) | `…\Internet Settings` | `ProxyEnable`, `ProxyServer`, `ProxyOverride`, `AutoConfigURL` |
+| Temp file | `%TEMP%\bypaxdpi_proxy_active.lock` | sentinel — proxy is active (dirty-shutdown marker) |
+| Temp file | `%TEMP%\bypaxdpi_sidecar.pid` | live sidecar PID |
+
+## 7. Security model
+
+BypaxDPI runs privileged native code, so the safety posture matters:
+
+- **Sentinel + panic hook.** While connected, a sentinel file marks the proxy as
+  set. On a clean exit it is removed; on a dirty shutdown the next launch detects
+  it and restores networking. Independently, a Rust **panic hook** (`main.rs`) does
+  emergency cleanup even on a hard panic: `reg add ProxyEnable=0`, blank
+  `ProxyServer`, and `taskkill /F /IM bypax-proxy.exe` — you are never left offline.
+- **Single instance.** A Windows global mutex (`Global\BypaxDPI_SingleInstance`)
+  prevents two instances from fighting over the system proxy; a second launch
+  focuses the existing window and exits.
+- **Native, no shell-outs for privileged ops.** Proxy/registry/admin work goes
+  through the `windows` crate, not spawned `cmd`/PowerShell, reducing AV false
+  positives and injection surface. (Some recovery paths do shell `reg`/`netsh`/
+  `ipconfig` deliberately, for robustness when the process is already failing.)
+- **Tauri sandbox.** The shell capability is scoped to the bundled
+  `binaries/bypax-proxy` sidecar — the frontend cannot run arbitrary commands. The
+  CSP locks the WebView down: `default-src 'self'; script-src 'self'; … object-src
+  'none'; frame-src 'none'; frame-ancestors 'none'; form-action 'none'` (full
+  string in `tauri.conf.json`).
+- **XSS.** Sidecar stdout and any user content are sanitized with **DOMPurify**
+  before the two `dangerouslySetInnerHTML` log-render sites (allow-list of inline
+  tags only).
+- **Proxy bypass list.** Critical Windows/connectivity and game/auth hosts
+  (`*.windowsupdate.com`, `*.msftconnecttest.com`, `*.steam*`, `*.riotgames.com`,
+  local ranges, …) are excluded from the proxy so updates, the OS connectivity
+  check, and game auth keep working. Defined in `registry::set_proxy()` and mirrored
+  in the served PAC.
+- **PAC server hardening.** Max 50 concurrent connections; binds `0.0.0.0` only for
+  LAN reach — it must not be port-forwarded to the internet.
+- **DoH bootstrap.** DoH resolvers are addressed by **IP**, not hostname, so the
+  DoH request itself doesn't depend on the ISP DNS it's meant to bypass.
+
+## 8. Toolchain
 
 This is a **Bun** project. `bun.lock` is the only committed lockfile (npm/yarn/pnpm
 lockfiles are gitignored).
@@ -176,7 +275,7 @@ the way Tauri's bundler expects on any platform. Override with env:
 | `bun run copy-proxy` | Copy the built sidecar into `src-tauri/binaries/` under both the plain and `-<target-triple>` names Tauri expects. |
 | `bun run update-proxy-icon` | PNG→ICO for the bundle/installer; stamp the sidecar `.exe` with icon + version metadata (skipped with a warning if the exe isn't built yet). |
 
-## 7. Build & run pipeline
+## 9. Build & run pipeline
 
 Prerequisites: Bun, Rust (+ Windows toolchain for a Windows build), Go, and the
 SpoofDPI source extracted to `SpoofDPI-<version>/` at the repo root (gitignored).
@@ -193,7 +292,7 @@ bun run tauri build        # runs beforeBuildCommand = `bun run build`
 `bun run build` = `update-proxy-icon && vite build`. `tauri.conf.json` points
 `beforeDevCommand`/`beforeBuildCommand` at Bun (not npm).
 
-## 8. Cross-platform status
+## 10. Cross-platform status
 
 Windows-only today (system-proxy + driver code is Windows-specific; SpoofDPI for
 Windows is built from source since upstream ships no Windows binary). The build

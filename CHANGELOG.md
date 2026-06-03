@@ -26,6 +26,11 @@ that actually type-checks. See [HISTORY.md](./HISTORY.md#the-typescript--bun-mig
   `logDirtyShutdownRecovery`) in both `tr` and `en`.
 - Root docs: `ARCHITECTURE.md`, `HISTORY.md`, `CHANGELOG.md`, `ROADMAP.md`,
   `GLOSSARY.md`.
+- `ARCHITECTURE.md`: verified SpoofDPI v1.5.x **argument surface** (§5),
+  **connection lifecycle & recovery matrix** (§6), and **security model** (§7) —
+  mined from upstream's `docs/`, fact-checked against `lib.rs`/`main.rs`/`App.tsx`.
+- `HISTORY.md`: recorded hard-fork status and why upstream's `docs/` was mined,
+  not merged (its SpoofDPI version/args/PAC facts are stale vs the code).
 
 ### Changed
 

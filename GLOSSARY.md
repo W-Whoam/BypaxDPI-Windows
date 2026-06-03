@@ -83,6 +83,24 @@ A Windows system HTTP setting separate from the per-user proxy. Enabling "Game
 Mode" tunnels WinHTTP through the proxy so C++ desktop games/services also bypass
 DPI. Controlled by `AppConfig.enableWinhttp`.
 
+## UWP loopback exemption
+
+UWP apps (Discord, Roblox, Xbox, Store apps) are sandboxed and cannot reach a
+`127.0.0.1` proxy by default. Game Mode adds a loopback exemption so they can use
+the local proxy too. Added alongside the WinHTTP tunnel during connect.
+
+## Single-instance mutex
+
+A Windows global mutex (`Global\BypaxDPI_SingleInstance`) that lets only one
+BypaxDPI run at a time, so two instances can't fight over the system proxy. A
+second launch focuses the existing window and exits.
+
+## Panic hook (failsafe)
+
+A Rust panic handler in `main.rs` that runs emergency cleanup even on a hard
+crash: disables the registry proxy (`ProxyEnable=0`), blanks `ProxyServer`, and
+kills the sidecar — the last-resort partner to [Sentinel recovery](#sentinel-recovery).
+
 ## Sentinel recovery
 
 A crash-safety mechanism: a sentinel file marks that the proxy was left set. If
